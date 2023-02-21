@@ -288,7 +288,7 @@ public class SlimefunItemStack extends ItemStack {
         }
 
         PlayerSkin skin = PlayerSkin.fromBase64(getTexture(id, texture));
-        return PlayerHead.getItemStack(skin);
+        return PlayerHead.getItemStack(skin, id);
     }
 
     private static @Nonnull String getTexture(@Nonnull String id, @Nonnull String texture) {
