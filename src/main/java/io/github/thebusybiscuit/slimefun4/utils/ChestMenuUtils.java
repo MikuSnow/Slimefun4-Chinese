@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -145,11 +146,16 @@ public final class ChestMenuUtils {
         im.setLore(Arrays.asList(getProgressBar(timeLeft, time), "", ChatColor.GRAY + NumberUtils.getTimeLeft(timeLeft / 2)));
         item.setItemMeta(im);
 
+        NBTItem nbtItem = new NBTItem(item);
+        nbtItem.setInteger("CustomModelData", 12345000 + time - timeLeft);
+        item = nbtItem.getItem();
+
         menu.replaceExistingItem(slot, item);
     }
 
     public static @Nonnull String getProgressBar(int time, int total) {
         StringBuilder builder = new StringBuilder();
+        time--;
         float percentage = Math.round(((((total - time) * 100.0F) / total) * 100.0F) / 100.0F);
 
         builder.append(NumberUtils.getColorFromPercentage(percentage));
@@ -171,6 +177,7 @@ public final class ChestMenuUtils {
     }
 
     private static short getDurability(@Nonnull ItemStack item, int timeLeft, int max) {
+        timeLeft--;
         return (short) ((item.getType().getMaxDurability() / max) * timeLeft);
     }
 

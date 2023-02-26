@@ -377,6 +377,7 @@ public abstract class AContainer extends SlimefunItem implements InventoryBlock,
 
                 // Fixes #3534 - Update indicator immediately
                 processor.updateProgressBar(inv, 22, currentOperation);
+                currentOperation.addProgress(1);
             }
         }
     }

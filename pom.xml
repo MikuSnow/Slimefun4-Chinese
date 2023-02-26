@@ -88,6 +88,11 @@
             <id>codemc-repo</id>
             <url>https://repo.codemc.io/repository/maven-public/</url>
         </repository>
+        <repository>
+            <id>nexus</id>
+            <name>releases</name>
+            <url>http://lnexus.bjd-mc.com:8081/repository/maven-public/</url>
+        </repository>
     </repositories>
 
     <build>
@@ -442,6 +447,12 @@
             <artifactId>SlimefunCompLib</artifactId>
             <version>9bf1e3d</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.tr7zw</groupId>
+            <artifactId>item-nbt-api-plugin</artifactId>
+            <version>2.11.1</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
