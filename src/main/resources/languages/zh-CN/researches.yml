@@ -181,8 +181,8 @@ slimefun:
   animal_growth_accelerator: 操纵动物生长
   xp_collector: 经验收集器
   organic_fertilizer: 有机肥料
-  crop_growth_accelerator: 作物生长加速器
-  better_crop_growth_accelerator: 更好的作物生长加速器
+  crop_growth_accelerator: 作物生长催化器
+  better_crop_growth_accelerator: 更好的作物生长催化器
   reactor_essentials: 反应堆基础
   nuclear_reactor: 核电农场
   freezer: 冰箱先生
@@ -237,7 +237,7 @@ slimefun:
   magnesium_generator: 来自镁的能量
   kelp_cookie: 美味的海藻
   makeshift_smeltery: 临时冶炼炉
-  tree_growth_accelerator: 树木生长加速器
+  tree_growth_accelerator: 树木生长催化器
   industrial_miner: 工业采矿
   advanced_industrial_miner: 进阶采矿
   magical_zombie_pills: 去僵尸化

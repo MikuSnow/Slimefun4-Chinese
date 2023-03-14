@@ -1,11 +1,18 @@
 package me.mrCookieSlime.CSCoreLibPlugin.general.Inventory;
 
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AGenerator;
+import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -252,6 +259,39 @@ public class ChestMenu {
         setup();
         for (Player p : players) {
             p.openInventory(this.inv);
+
+            if (this.inv.getLocation() != null) {
+                SlimefunItem check = BlockStorage.check(this.inv.getLocation());
+                if (check instanceof AContainer aContainer) {
+//                    ItemStack chargeDisplayItem = aContainer.getChargeDisplayItem(this.inv.getLocation().getBlock());
+                    ItemStack chargeDisplayItem = new ItemStack(Material.FLINT_AND_STEEL);
+                    ItemMeta itemMeta = chargeDisplayItem.getItemMeta();
+                    short maxDurability = chargeDisplayItem.getType().getMaxDurability();
+                    itemMeta.setDisplayName("§d能量存储");
+                    itemMeta.setLore(List.of("§c0 §e⚡ §7/ §40 §e⚡"));
+
+                    if (itemMeta instanceof Damageable damageable) {
+                        damageable.setDamage(maxDurability);
+                        chargeDisplayItem.setItemMeta(damageable);
+                    }
+                    this.inv.setItem(18, chargeDisplayItem);
+                }
+                if (check instanceof AGenerator aGenerator) {
+//                    ItemStack chargeDisplayItem = aContainer.getChargeDisplayItem(this.inv.getLocation().getBlock());
+                    ItemStack chargeDisplayItem = new ItemStack(Material.FLINT_AND_STEEL);
+                    ItemMeta itemMeta = chargeDisplayItem.getItemMeta();
+                    short maxDurability = chargeDisplayItem.getType().getMaxDurability();
+                    itemMeta.setDisplayName("§d能量存储");
+                    itemMeta.setLore(List.of("§c0 §e⚡ §7/ §40 §e⚡"));
+
+                    if (itemMeta instanceof Damageable damageable) {
+                        damageable.setDamage(maxDurability);
+                        chargeDisplayItem.setItemMeta(damageable);
+                    }
+                    this.inv.setItem(18, chargeDisplayItem);
+                }
+            }
+
             MenuListener.menus.put(p.getUniqueId(), this);
             if (open != null)
                 open.onOpen(p);

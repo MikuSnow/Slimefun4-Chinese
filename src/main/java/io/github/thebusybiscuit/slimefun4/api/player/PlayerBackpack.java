@@ -77,7 +77,7 @@ public class PlayerBackpack {
         markDirty();
 
         var holder = new SlimefunBackpackHolder();
-        inventory = Bukkit.createInventory(holder, size, "背包 [大小 " + size + "]");
+        inventory = Bukkit.createInventory(holder, size, "§a§r§3背包 §8[§7大小 §e" + size + "§8]");
 
         holder.setBackpack(this);
         holder.setInventory(inventory);
@@ -165,7 +165,7 @@ public class PlayerBackpack {
 
         var holder = new SlimefunBackpackHolder();
 
-        Inventory inv = Bukkit.createInventory(holder, size, "背包 [大小 " + size + "]");
+        Inventory inv = Bukkit.createInventory(holder, size, "§a§r§3背包 §8[§7大小 §e" + size + "§8]");
 
         holder.setInventory(inv);
         holder.setBackpack(this);
