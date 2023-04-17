@@ -63,21 +63,30 @@ public class CapacitorTextureUpdateTask implements Runnable {
             if (filledPercentage <= 0.0) {
                 UpdateSkullBlock.manageCapacitorProcess(l, 0);
                 // 0-25% capacity
-            } else if (filledPercentage <= 0.20) {
+            } else if (filledPercentage <= 0.125) {
                 // 25-50% capacity
-                UpdateSkullBlock.manageCapacitorProcess(l, 20);
-            } else if (filledPercentage <= 0.40) {
+                UpdateSkullBlock.manageCapacitorProcess(l, 1);
+            } else if (filledPercentage <= 0.25) {
                 // 25-50% capacity
-                UpdateSkullBlock.manageCapacitorProcess(l, 40);
-            } else if (filledPercentage <= 0.60) {
+                UpdateSkullBlock.manageCapacitorProcess(l, 2);
+            } else if (filledPercentage <= 0.375) {
                 // 25-50% capacity
-                UpdateSkullBlock.manageCapacitorProcess(l, 60);
-            } else if (filledPercentage <= 0.80) {
+                UpdateSkullBlock.manageCapacitorProcess(l, 3);
+            } else if (filledPercentage <= 0.5) {
+                // 25-50% capacity
+                UpdateSkullBlock.manageCapacitorProcess(l, 4);
+            } else if (filledPercentage <= 0.625) {
+                // 25-50% capacity
+                UpdateSkullBlock.manageCapacitorProcess(l, 5);
+            } else if (filledPercentage <= 0.75) {
+                // 25-50% capacity
+                UpdateSkullBlock.manageCapacitorProcess(l, 6);
+            } else if (filledPercentage <= 0.875) {
                 // 50-75% capacity
-                UpdateSkullBlock.manageCapacitorProcess(l, 80);
+                UpdateSkullBlock.manageCapacitorProcess(l, 7);
             } else {
                 // 75-100% capacity
-                UpdateSkullBlock.manageCapacitorProcess(l, 100);
+                UpdateSkullBlock.manageCapacitorProcess(l, 8);
             }
         }
     }

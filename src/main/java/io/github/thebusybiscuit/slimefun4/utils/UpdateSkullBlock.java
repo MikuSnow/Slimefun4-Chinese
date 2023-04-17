@@ -59,21 +59,24 @@ public class UpdateSkullBlock {
                 if (block.getType().equals(Material.AIR)) return;
                 BlockState state = block.getState();
                 if (state instanceof Skull skull) {
-                    System.out.println("#1");
                     String skullName = skull.getOwner();
                     if (skullName == null) return;
                     if (skullName.endsWith("_" + process)) return;
-                    System.out.println("#2");
                     String newSkullName = null;
 
-                    newSkullName = skullName.replace("_20", "").replace("_40", "").replace("_60", "").replace("_80", "").replace("_100", "");
+                    newSkullName = skullName.replace("_1", "")
+                            .replace("_2", "")
+                            .replace("_3", "")
+                            .replace("_4", "")
+                            .replace("_5", "")
+                            .replace("_6", "")
+                            .replace("_7", "")
+                            .replace("_8", "");
 
-                    System.out.println("#3");
                     if (process != 0) {
                         newSkullName = newSkullName + "_" + process;
                     }
                     if (skullName.equals(newSkullName)) return;
-                    System.out.println(newSkullName);
                     OfflinePlayer newOfflinePlayer = getFakeOfflinePlayer(newSkullName);
                     skull.setOwnerProfile(null);
                     skull.setOwningPlayer(newOfflinePlayer);
