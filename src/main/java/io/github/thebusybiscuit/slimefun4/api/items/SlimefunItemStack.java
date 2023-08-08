@@ -293,7 +293,7 @@ public class SlimefunItemStack extends ItemStack {
         NBTItem nbtItem = new NBTItem(itemStack);
         if (nbtItem.hasTag("SkullOwner")) {
             if (nbtItem.getCompound("SkullOwner").hasTag("Name")) {
-                nbtItem.getCompound("SkullOwner").setString("Name", "geyser_custom_block_" + id);
+                nbtItem.getCompound("SkullOwner").setString("Name", "heypixel:" + id);
                 return nbtItem.getItem();
             }
         }
