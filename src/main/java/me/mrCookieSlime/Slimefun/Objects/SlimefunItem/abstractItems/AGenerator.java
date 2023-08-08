@@ -18,6 +18,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.handlers.SimpleBlockBre
 import io.github.thebusybiscuit.slimefun4.implementation.items.electric.AbstractEnergyProvider;
 import io.github.thebusybiscuit.slimefun4.implementation.operations.FuelOperation;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
+import io.github.thebusybiscuit.slimefun4.utils.UpdateSkullBlock;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import io.github.thebusybiscuit.slimefun4.utils.itemstack.ItemStackWrapper;
 import me.mrCookieSlime.CSCoreLibPlugin.general.Inventory.ChestMenu.AdvancedMenuClickHandler;
@@ -31,12 +32,16 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class AGenerator extends AbstractEnergyProvider implements MachineProcessHolder<FuelOperation> {
@@ -135,6 +140,19 @@ public abstract class AGenerator extends AbstractEnergyProvider implements Machi
         }
 
         preset.addItem(22, new CustomItemStack(Material.BLACK_STAINED_GLASS_PANE, " "), ChestMenuUtils.getEmptyClickHandler());
+
+        ItemStack itemStack = new ItemStack(Material.FLINT_AND_STEEL);
+
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        short maxDurability = itemStack.getType().getMaxDurability();
+        itemMeta.setDisplayName("§d能量存储");
+        itemMeta.setLore(List.of("§c0 §e⚡ §7/ §40 §e⚡"));
+
+        if (itemMeta instanceof Damageable damageable) {
+            damageable.setDamage(maxDurability);
+        }
+        itemStack.setItemMeta(itemMeta);
+        preset.addItem(18, itemStack, ChestMenuUtils.getEmptyClickHandler());
     }
 
     @Override
@@ -151,6 +169,7 @@ public abstract class AGenerator extends AbstractEnergyProvider implements Machi
     public int getGeneratedOutput(Location l, SlimefunBlockData data) {
         BlockMenu inv = StorageCacheUtils.getMenu(l);
         FuelOperation operation = processor.getOperation(l);
+        inv.replaceExistingItem(18, getChargeDisplayItem(l));
 
         if (operation != null) {
             if (!operation.isFinished()) {
@@ -163,9 +182,11 @@ public abstract class AGenerator extends AbstractEnergyProvider implements Machi
                         operation.addProgress(1);
                         return getEnergyProduction();
                     }
+                    UpdateSkullBlock.manageMachineBlockActive(inv.getBlock().getLocation(), true);
 
                     return 0;
                 } else {
+                    UpdateSkullBlock.manageMachineBlockActive(inv.getBlock().getLocation(), true);
                     operation.addProgress(1);
                     return getEnergyProduction();
                 }
@@ -176,9 +197,24 @@ public abstract class AGenerator extends AbstractEnergyProvider implements Machi
                     inv.pushItem(new ItemStack(Material.BUCKET), getOutputSlots());
                 }
 
-                inv.replaceExistingItem(22, new CustomItemStack(Material.BLACK_STAINED_GLASS_PANE, " "));
-
                 processor.endOperation(l);
+
+
+                Map<Integer, Integer> newFound = new HashMap<>();
+                MachineFuel newFuel = findRecipe(inv, newFound);
+
+                if (newFuel != null) {
+                    for (Map.Entry<Integer, Integer> entry : newFound.entrySet()) {
+                        inv.consumeItem(entry.getKey(), entry.getValue());
+                    }
+
+                    processor.startOperation(l, new FuelOperation(newFuel));
+                    processor.getOperation(l).addProgress(1);
+                } else {
+                    inv.replaceExistingItem(22, new CustomItemStack(Material.BLACK_STAINED_GLASS_PANE, " "));
+                    UpdateSkullBlock.manageMachineBlockActive(inv.getBlock().getLocation(), false);
+                }
+
                 return 0;
             }
         } else {
@@ -191,10 +227,32 @@ public abstract class AGenerator extends AbstractEnergyProvider implements Machi
                 }
 
                 processor.startOperation(l, new FuelOperation(fuel));
+                UpdateSkullBlock.manageMachineBlockActive(inv.getBlock().getLocation(), true);
+            } else {
+                UpdateSkullBlock.manageMachineBlockActive(inv.getBlock().getLocation(), false);
             }
 
             return 0;
         }
+    }
+
+
+    public ItemStack getChargeDisplayItem(Location location) {
+        CustomItemStack trident = new CustomItemStack(Material.FLINT_AND_STEEL, " ");
+
+        ItemStack item = trident.clone();
+        ItemMeta im = item.getItemMeta();
+        im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+
+        im.setDisplayName("§d能量存储");
+        im.setLore(List.of("§c" + getCharge(location) + " §e⚡ §7/ §4" + getCapacity() + " §e⚡"));
+
+        if (im instanceof Damageable damageable) {
+            damageable.setDamage((int) (item.getType().getMaxDurability() * ((getCapacity() - getCharge(location)) / (double) (getCapacity()))));
+        }
+        item.setItemMeta(im);
+
+        return item;
     }
 
     private boolean isBucket(@Nullable ItemStack item) {

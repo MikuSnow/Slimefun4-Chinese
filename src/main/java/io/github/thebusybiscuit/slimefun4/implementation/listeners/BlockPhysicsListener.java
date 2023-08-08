@@ -162,7 +162,7 @@ public class BlockPhysicsListener implements Listener {
         if (state.getState() instanceof Skull) {
             Skull skull = (Skull) state.getState();
 
-            if (skull.hasOwner() && Objects.equals(skull.getOwningPlayer().getName(), "CS-CoreLib")) {
+            if (skull.hasOwner() && (skull.getOwningPlayer().getName().startsWith("CS-CoreLib") || skull.getOwningPlayer().getName().startsWith("heypixel:"))) {
                 e.setCancelled(true);
             }
         }

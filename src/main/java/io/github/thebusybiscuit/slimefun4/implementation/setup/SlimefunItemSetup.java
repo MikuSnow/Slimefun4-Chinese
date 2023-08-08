@@ -621,7 +621,7 @@ public final class SlimefunItemSetup {
         new ItemStack[] {new ItemStack(Material.NETHERRACK, 16), null, null, null, null, null, null, null, null})
         .register(plugin);
 
-        new UnplaceableBlock(itemGroups.resources, SlimefunItems.CARBON, RecipeType.COMPRESSOR,
+        new SlimefunItem(itemGroups.resources, SlimefunItems.CARBON, RecipeType.COMPRESSOR,
         new ItemStack[] {new ItemStack(Material.COAL, 8), null, null, null, null, null, null, null, null})
         .register(plugin);
 
@@ -633,11 +633,11 @@ public final class SlimefunItemSetup {
         new ItemStack[] {new SlimefunItemStack(SlimefunItems.STEEL_INGOT, 8), null, null, null, null, null, null, null, null})
         .register(plugin);
 
-        new UnplaceableBlock(itemGroups.resources, SlimefunItems.COMPRESSED_CARBON, RecipeType.COMPRESSOR,
+        new SlimefunItem(itemGroups.resources, SlimefunItems.COMPRESSED_CARBON, RecipeType.COMPRESSOR,
         new ItemStack[] {new SlimefunItemStack(SlimefunItems.CARBON, 4), null, null, null, null, null, null, null, null})
         .register(plugin);
 
-        new UnplaceableBlock(itemGroups.resources, SlimefunItems.CARBON_CHUNK, RecipeType.ENHANCED_CRAFTING_TABLE,
+        new SlimefunItem(itemGroups.resources, SlimefunItems.CARBON_CHUNK, RecipeType.ENHANCED_CRAFTING_TABLE,
         new ItemStack[] {SlimefunItems.COMPRESSED_CARBON, SlimefunItems.COMPRESSED_CARBON, SlimefunItems.COMPRESSED_CARBON, SlimefunItems.COMPRESSED_CARBON, new ItemStack(Material.FLINT), SlimefunItems.COMPRESSED_CARBON, SlimefunItems.COMPRESSED_CARBON, SlimefunItems.COMPRESSED_CARBON, SlimefunItems.COMPRESSED_CARBON})
         .register(plugin);
 

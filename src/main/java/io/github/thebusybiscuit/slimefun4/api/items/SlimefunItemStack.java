@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import de.tr7zw.nbtapi.NBTItem;
 import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -288,7 +289,15 @@ public class SlimefunItemStack extends ItemStack {
         }
 
         PlayerSkin skin = PlayerSkin.fromBase64(getTexture(id, texture));
-        return PlayerHead.getItemStack(skin);
+        ItemStack itemStack = PlayerHead.getItemStack(skin);
+        NBTItem nbtItem = new NBTItem(itemStack);
+        if (nbtItem.hasTag("SkullOwner")) {
+            if (nbtItem.getCompound("SkullOwner").hasTag("Name")) {
+                nbtItem.getCompound("SkullOwner").setString("Name", "heypixel:" + id);
+                return nbtItem.getItem();
+            }
+        }
+        return itemStack;
     }
 
     private static @Nonnull String getTexture(@Nonnull String id, @Nonnull String texture) {

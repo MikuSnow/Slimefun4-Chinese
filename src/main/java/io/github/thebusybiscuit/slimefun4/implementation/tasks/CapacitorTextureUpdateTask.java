@@ -2,6 +2,7 @@ package io.github.thebusybiscuit.slimefun4.implementation.tasks;
 
 import javax.annotation.Nonnull;
 
+import io.github.thebusybiscuit.slimefun4.utils.UpdateSkullBlock;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -58,18 +59,34 @@ public class CapacitorTextureUpdateTask implements Runnable {
 
         // Ensure that this Block is still a Player Head
         if (type == Material.PLAYER_HEAD || type == Material.PLAYER_WALL_HEAD) {
-            if (filledPercentage <= 0.25) {
+            System.out.println(filledPercentage);
+            if (filledPercentage <= 0.0) {
+                UpdateSkullBlock.manageCapacitorProcess(l, 0);
                 // 0-25% capacity
-                setTexture(b, HeadTexture.CAPACITOR_25);
+            } else if (filledPercentage <= 0.125) {
+                // 25-50% capacity
+                UpdateSkullBlock.manageCapacitorProcess(l, 1);
+            } else if (filledPercentage <= 0.25) {
+                // 25-50% capacity
+                UpdateSkullBlock.manageCapacitorProcess(l, 2);
+            } else if (filledPercentage <= 0.375) {
+                // 25-50% capacity
+                UpdateSkullBlock.manageCapacitorProcess(l, 3);
             } else if (filledPercentage <= 0.5) {
                 // 25-50% capacity
-                setTexture(b, HeadTexture.CAPACITOR_50);
+                UpdateSkullBlock.manageCapacitorProcess(l, 4);
+            } else if (filledPercentage <= 0.625) {
+                // 25-50% capacity
+                UpdateSkullBlock.manageCapacitorProcess(l, 5);
             } else if (filledPercentage <= 0.75) {
+                // 25-50% capacity
+                UpdateSkullBlock.manageCapacitorProcess(l, 6);
+            } else if (filledPercentage <= 0.875) {
                 // 50-75% capacity
-                setTexture(b, HeadTexture.CAPACITOR_75);
+                UpdateSkullBlock.manageCapacitorProcess(l, 7);
             } else {
                 // 75-100% capacity
-                setTexture(b, HeadTexture.CAPACITOR_100);
+                UpdateSkullBlock.manageCapacitorProcess(l, 8);
             }
         }
     }

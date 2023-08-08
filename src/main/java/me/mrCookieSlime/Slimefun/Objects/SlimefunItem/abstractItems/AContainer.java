@@ -111,6 +111,20 @@ public abstract class AContainer extends SlimefunItem implements InventoryBlock,
 
         preset.addItem(22, new CustomItemStack(Material.BLACK_STAINED_GLASS_PANE, " "), ChestMenuUtils.getEmptyClickHandler());
 
+        ItemStack itemStack = new ItemStack(Material.FLINT_AND_STEEL);
+
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        short maxDurability = itemStack.getType().getMaxDurability();
+        itemMeta.setDisplayName("§d能量存储");
+        itemMeta.setLore(List.of("§c0 §e⚡ §7/ §40 §e⚡"));
+
+        if (itemMeta instanceof Damageable damageable) {
+            damageable.setDamage(maxDurability);
+        }
+        itemStack.setItemMeta(itemMeta);
+
+        preset.addItem(18, itemStack, ChestMenuUtils.getEmptyClickHandler());
+
         for (int i : getOutputSlots()) {
             preset.addMenuClickHandler(i, new AdvancedMenuClickHandler() {
 
@@ -345,9 +359,27 @@ public abstract class AContainer extends SlimefunItem implements InventoryBlock,
         });
     }
 
+    public ItemStack getChargeDisplayItem(Block b) {
+        CustomItemStack trident = new CustomItemStack(Material.FLINT_AND_STEEL, " ");
+
+        ItemStack item = trident.clone();
+        ItemMeta im = item.getItemMeta();
+        im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        im.setDisplayName("§d能量存储");
+        im.setLore(List.of("§c" + getCharge(b.getLocation()) + " §e⚡ §7/ §4" + getCapacity() + " §e⚡"));
+
+        if (im instanceof Damageable damageable) {
+            damageable.setDamage((int) (item.getType().getMaxDurability() * ((getCapacity() - getCharge(b.getLocation())) / (double) (getCapacity()))));
+        }
+        item.setItemMeta(im);
+
+        return item;
+    }
+
     protected void tick(Block b) {
         BlockMenu inv = StorageCacheUtils.getMenu(b.getLocation());
         CraftingOperation currentOperation = processor.getOperation(b);
+        inv.replaceExistingItem(18, getChargeDisplayItem(b));
 
         if (currentOperation != null) {
             if (takeCharge(b.getLocation())) {
@@ -355,6 +387,7 @@ public abstract class AContainer extends SlimefunItem implements InventoryBlock,
                 if (!currentOperation.isFinished()) {
                     processor.updateProgressBar(inv, 22, currentOperation);
                     currentOperation.addProgress(1);
+                    UpdateSkullBlock.manageMachineBlockActive(inv.getBlock().getLocation(), true);
                 } else {
                     inv.replaceExistingItem(22, new CustomItemStack(Material.BLACK_STAINED_GLASS_PANE, " "));
 
@@ -363,6 +396,7 @@ public abstract class AContainer extends SlimefunItem implements InventoryBlock,
                     }
 
                     processor.endOperation(b);
+                    UpdateSkullBlock.manageMachineBlockActive(inv.getBlock().getLocation(), false);
                 }
             }
         } else {
@@ -374,6 +408,10 @@ public abstract class AContainer extends SlimefunItem implements InventoryBlock,
 
                 // Fixes #3534 - Update indicator immediately
                 processor.updateProgressBar(inv, 22, currentOperation);
+                currentOperation.addProgress(1);
+                UpdateSkullBlock.manageMachineBlockActive(inv.getBlock().getLocation(), true);
+            } else {
+                UpdateSkullBlock.manageMachineBlockActive(inv.getBlock().getLocation(), false);
             }
         }
     }
