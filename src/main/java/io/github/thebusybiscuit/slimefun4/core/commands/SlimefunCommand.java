@@ -22,9 +22,8 @@ import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 /**
  * This {@link CommandExecutor} holds the functionality of our {@code /slimefun} command.
- * 
- * @author TheBusyBiscuit
  *
+ * @author TheBusyBiscuit
  */
 public class SlimefunCommand implements CommandExecutor, Listener {
 
@@ -35,7 +34,7 @@ public class SlimefunCommand implements CommandExecutor, Listener {
 
     /**
      * Creates a new instance of {@link SlimefunCommand}
-     * 
+     *
      * @param plugin
      *            The instance of our {@link Slimefun}
      */
@@ -60,7 +59,7 @@ public class SlimefunCommand implements CommandExecutor, Listener {
 
     /**
      * Returns a heatmap of how often certain commands are used.
-     * 
+     *
      * @return A {@link Map} holding the amount of times each command was run
      */
     public @Nonnull Map<SubCommand, Integer> getCommandUsage() {
@@ -112,7 +111,7 @@ public class SlimefunCommand implements CommandExecutor, Listener {
 
     /**
      * This returns A {@link List} containing every possible {@link SubCommand} of this {@link Command}.
-     * 
+     *
      * @return A {@link List} containing every {@link SubCommand}
      */
     public @Nonnull List<String> getSubCommandNames() {

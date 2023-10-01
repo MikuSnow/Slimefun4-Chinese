@@ -24,8 +24,16 @@ jobs:
           java-package: jdk
           architecture: x64
           cache: maven
-      - if: github.event_name != 'pull_request'
+          server-id: github
+          settings-path: ${{ github.workspace }}
+      - name: Build Slimefun
+        if: github.event_name != 'pull_request'
         run: mvn -B package --file pom.xml --errors
+      - name: Publish Slimefun
+        if: github.event_name != 'pull_request'
+        run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml --file pom-github-package.xml --errors
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - name: Mask Output
         if: github.event_name != 'pull_request'
         run: |
@@ -38,7 +46,7 @@ jobs:
           cd target && FILENAME=$(find . -maxdepth 1 -mindepth 1 -name "Slimefun-*" | cut -d'/' -f 2)
           echo "slimefun-artifact-name=$FILENAME" >> "$GITHUB_ENV"
           cd ..
-      - name: Publish
+      - name: Upload Build
         if: github.event_name != 'pull_request'
         uses: cloudflare/wrangler-action@2.0.0
         with:

@@ -1,6 +1,5 @@
 package io.github.thebusybiscuit.slimefun4.implementation.listeners;
 
-import city.norain.slimefun4.holder.SlimefunBackpackHolder;
 import com.xzavier0722.mc.plugin.slimefun4.storage.util.InvStorageUtils;
 import io.github.bakedlibs.dough.collections.Pair;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
@@ -10,18 +9,14 @@ import io.github.thebusybiscuit.slimefun4.core.services.sounds.SoundEffect;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.backpacks.Cooler;
 import io.github.thebusybiscuit.slimefun4.implementation.items.backpacks.SlimefunBackpack;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -61,9 +56,9 @@ public class BackpackListener implements Listener {
     public void onClose(InventoryCloseEvent e) {
         Player p = (Player) e.getPlayer();
 
-        if (e.getInventory().getHolder() instanceof SlimefunBackpackHolder holder) {
+        if (e.getInventory().getHolder() instanceof PlayerBackpack backpack) {
             backpacks.remove(p.getUniqueId());
-            saveBackpackInv(holder.getBackpack());
+            saveBackpackInv(backpack);
             SoundEffect.BACKPACK_CLOSE_SOUND.playFor(p);
         }
     }

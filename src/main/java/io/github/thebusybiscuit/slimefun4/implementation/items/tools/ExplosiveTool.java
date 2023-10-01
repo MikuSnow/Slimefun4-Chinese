@@ -1,6 +1,23 @@
 package io.github.thebusybiscuit.slimefun4.implementation.items.tools;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
+
+import dev.lone.itemsadder.api.CustomBlock;
+import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.inventory.ItemStack;
+
 import com.xzavier0722.mc.plugin.slimefun4.storage.util.StorageCacheUtils;
+
 import io.github.bakedlibs.dough.protection.Interaction;
 import io.github.thebusybiscuit.slimefun4.api.events.ExplosiveToolBreakBlocksEvent;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
@@ -16,26 +33,14 @@ import io.github.thebusybiscuit.slimefun4.core.services.sounds.SoundEffect;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import io.github.thebusybiscuit.slimefun4.utils.tags.SlimefunTag;
-import org.bukkit.Bukkit;
-import org.bukkit.Effect;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockExplodeEvent;
-import org.bukkit.inventory.ItemStack;
 
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
-import java.util.List;
+import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
 /**
  * This {@link SlimefunItem} is a super class for items like the {@link ExplosivePickaxe} or {@link ExplosiveShovel}.
- * 
+ *
  * @author TheBusyBiscuit
- * 
+ *
  * @see ExplosivePickaxe
  * @see ExplosiveShovel
  *
@@ -81,6 +86,10 @@ public class ExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implements
             if (!blockExplodeEvent.isCancelled()) {
                 for (Block block : blockExplodeEvent.blockList()) {
                     if (canBreak(p, block)) {
+                        if (Slimefun.getIntegrations().isCustomBlock(block)) {
+                            drops.addAll(CustomBlock.byAlreadyPlaced(block).getLoot());
+                            CustomBlock.remove(block.getLocation());
+                        }
                         blocksToDestroy.add(block);
                     }
                 }
@@ -88,6 +97,10 @@ public class ExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implements
         } else {
             for (Block block : blocks) {
                 if (canBreak(p, block)) {
+                    if (Slimefun.getIntegrations().isCustomBlock(block)) {
+                        drops.addAll(CustomBlock.byAlreadyPlaced(block).getLoot());
+                        CustomBlock.remove(block.getLocation());
+                    }
                     blocksToDestroy.add(block);
                 }
             }
@@ -135,8 +148,6 @@ public class ExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implements
             return false;
         } else if (!b.getWorld().getWorldBorder().isInside(b.getLocation())) {
             return false;
-        } else if (Slimefun.getIntegrations().isCustomBlock(b)) {
-            return false;
         } else {
             return Slimefun.getProtectionManager().hasPermission(p, b.getLocation(), Interaction.BREAK_BLOCK);
         }
@@ -159,7 +170,14 @@ public class ExplosiveTool extends SimpleSlimefunItem<ToolUseHandler> implements
              */
             BlockBreakEvent dummyEvent = new BlockBreakEvent(b, e.getPlayer());
 
-            if (sfItem.callItemHandler(BlockBreakHandler.class, handler -> handler.onPlayerBreak(dummyEvent, item, drops)) && !dummyEvent.isCancelled()) {
+            /*
+             * Fixes #3036 and handling in general.
+             * Call the BlockBreakHandler if the block has one to allow for proper handling.
+             */
+            sfItem.callItemHandler(BlockBreakHandler.class, handler -> handler.onPlayerBreak(dummyEvent, item, drops));
+
+            // Make sure the event wasn't cancelled by the BlockBreakHandler.
+            if (!dummyEvent.isCancelled()) {
                 drops.addAll(sfItem.getDrops(p));
                 b.setType(Material.AIR);
                 Slimefun.getDatabaseManager().getBlockDataController().removeBlock(loc);

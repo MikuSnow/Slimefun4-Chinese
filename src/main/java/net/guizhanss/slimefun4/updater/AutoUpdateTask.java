@@ -16,7 +16,7 @@ public class AutoUpdateTask implements Runnable {
 
     private static final String GITHUB_USER = "StarWishsama";
     private static final String GITHUB_REPO = "Slimefun4";
-    private static final String GITHUB_BRANCH_CANARY = "master";
+    private static final String GITHUB_BRANCH_BETA = "master";
     private static final String GITHUB_BRANCH_RELEASE = "release";
 
     private final Plugin plugin;
@@ -51,8 +51,8 @@ public class AutoUpdateTask implements Runnable {
     private String getBranch() {
         if (version.endsWith("release")) {
             return GITHUB_BRANCH_RELEASE;
-        } else if (version.endsWith("canary")) {
-            return GITHUB_BRANCH_CANARY;
+        } else if (version.endsWith("Beta")) {
+            return GITHUB_BRANCH_BETA;
         } else {
             return null;
         }

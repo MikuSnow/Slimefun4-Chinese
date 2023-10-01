@@ -8,15 +8,6 @@ import javax.annotation.Nonnull;
 import org.bukkit.Bukkit;
 
 class EnvironmentChecker {
-    static {
-        if (Bukkit.getPluginManager().getPlugin("MiraiMC") != null) {
-            System.setProperty("MiraiMC.StandWithNpp", "true");
-            var logger = Logger.getLogger("Slimefun");
-            logger.log(Level.WARNING, "检测到 MiraiMC, 已自动添加参数防止服务器被恶意阻塞");
-            logger.log(Level.WARNING, "我用 Notepad++ 怎么你了?");
-        }
-    }
-
     private static final List<String> UNSUPPORTED_PLUGINS = List.of("BedrockTechnology", "SlimefunFix", "SlimefunBugFixer", "Slimefunbookfix", "MiraiMC");
 
     static boolean checkIncompatiblePlugins(@Nonnull Slimefun sf, @Nonnull Logger logger) {

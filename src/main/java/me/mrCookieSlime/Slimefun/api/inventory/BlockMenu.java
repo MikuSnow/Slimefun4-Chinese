@@ -7,6 +7,7 @@ import java.util.logging.Level;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import io.github.bakedlibs.dough.config.Config;
@@ -63,6 +64,12 @@ public class BlockMenu extends DirtyChestMenu {
 
         preset.clone(this);
         this.getContents();
+    }
+
+    public BlockMenu(BlockMenuPreset preset, Location l, Inventory inv) {
+        super(preset);
+        this.location = l;
+        this.inventory = inv;
     }
 
     public void save(Location l) {

@@ -1,5 +1,10 @@
 package me.mrCookieSlime.CSCoreLibPlugin.general.Inventory;
 
+import city.norain.slimefun4.holder.SlimefunInventoryHolder;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArraySet;
+import javax.annotation.Nonnull;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AGenerator;
@@ -25,17 +30,17 @@ import java.util.Map;
  * Don't look at the code, it will be gone soon, don't worry.
  */
 @Deprecated
-public class ChestMenu {
+public class ChestMenu extends SlimefunInventoryHolder {
 
     private boolean clickable;
     private boolean emptyClickable;
     private String title;
-    private Inventory inv;
     private List<ItemStack> items;
     private Map<Integer, MenuClickHandler> handlers;
     private MenuOpeningHandler open;
     private MenuCloseHandler close;
     private MenuClickHandler playerclick;
+    private final Set<UUID> viewers = new CopyOnWriteArraySet<>();
 
     /**
      * Creates a new ChestMenu with the specified
@@ -156,7 +161,7 @@ public class ChestMenu {
      */
     public ItemStack getItemInSlot(int slot) {
         setup();
-        return this.inv.getItem(slot);
+        return this.inventory.getItem(slot);
     }
 
     /**
@@ -214,15 +219,27 @@ public class ChestMenu {
      */
     public ItemStack[] getContents() {
         setup();
-        return this.inv.getContents();
+        return this.inventory.getContents();
+    }
+
+    public void addViewer(@Nonnull UUID uuid) {
+        viewers.add(uuid);
+    }
+
+    public void removeViewer(@Nonnull UUID uuid) {
+        viewers.remove(uuid);
+    }
+
+    public boolean contains(@Nonnull Player viewer) {
+        return viewers.contains(viewer.getUniqueId());
     }
 
     private void setup() {
-        if (this.inv != null)
+        if (this.inventory != null)
             return;
-        this.inv = Bukkit.createInventory(null, ((int) Math.ceil(this.items.size() / 9F)) * 9, title);
+        this.inventory = Bukkit.createInventory(this, ((int) Math.ceil(this.items.size() / 9F)) * 9, title);
         for (int i = 0; i < this.items.size(); i++) {
-            this.inv.setItem(i, this.items.get(i));
+            this.inventory.setItem(i, this.items.get(i));
         }
     }
 
@@ -231,11 +248,11 @@ public class ChestMenu {
      */
     public void reset(boolean update) {
         if (update)
-            this.inv.clear();
+            this.inventory.clear();
         else
-            this.inv = Bukkit.createInventory(null, ((int) Math.ceil(this.items.size() / 9F)) * 9, title);
+            this.inventory = Bukkit.createInventory(this, ((int) Math.ceil(this.items.size() / 9F)) * 9, title);
         for (int i = 0; i < this.items.size(); i++) {
-            this.inv.setItem(i, this.items.get(i));
+            this.inventory.setItem(i, this.items.get(i));
         }
     }
 
@@ -247,7 +264,7 @@ public class ChestMenu {
      */
     public void replaceExistingItem(int slot, ItemStack item) {
         setup();
-        this.inv.setItem(slot, item);
+        this.inventory.setItem(slot, item);
     }
 
     /**
@@ -258,11 +275,12 @@ public class ChestMenu {
     public void open(Player... players) {
         setup();
         for (Player p : players) {
-            p.openInventory(this.inv);
+            p.openInventory(this.inventory);
 
-            if (this.inv.getLocation() != null) {
-                SlimefunItem check = BlockStorage.check(this.inv.getLocation());
-                if (check instanceof AContainer aContainer) {
+
+            if (this.inventory.getLocation() != null) {
+                SlimefunItem check = BlockStorage.check(this.inventory.getLocation());
+                if (check instanceof AContainer) {
 //                    ItemStack chargeDisplayItem = aContainer.getChargeDisplayItem(this.inv.getLocation().getBlock());
                     ItemStack chargeDisplayItem = new ItemStack(Material.FLINT_AND_STEEL);
                     ItemMeta itemMeta = chargeDisplayItem.getItemMeta();
@@ -274,9 +292,9 @@ public class ChestMenu {
                         damageable.setDamage(maxDurability);
                         chargeDisplayItem.setItemMeta(damageable);
                     }
-                    this.inv.setItem(18, chargeDisplayItem);
+                    this.inventory.setItem(18, chargeDisplayItem);
                 }
-                if (check instanceof AGenerator aGenerator) {
+                if (check instanceof AGenerator) {
 //                    ItemStack chargeDisplayItem = aContainer.getChargeDisplayItem(this.inv.getLocation().getBlock());
                     ItemStack chargeDisplayItem = new ItemStack(Material.FLINT_AND_STEEL);
                     ItemMeta itemMeta = chargeDisplayItem.getItemMeta();
@@ -288,11 +306,11 @@ public class ChestMenu {
                         damageable.setDamage(maxDurability);
                         chargeDisplayItem.setItemMeta(damageable);
                     }
-                    this.inv.setItem(18, chargeDisplayItem);
+                    this.inventory.setItem(18, chargeDisplayItem);
                 }
             }
 
-            MenuListener.menus.put(p.getUniqueId(), this);
+            addViewer(p.getUniqueId());
             if (open != null)
                 open.onOpen(p);
         }
@@ -343,7 +361,7 @@ public class ChestMenu {
      * @return The converted Inventory
      */
     public Inventory toInventory() {
-        return this.inv;
+        return this.inventory;
     }
 
     @FunctionalInterface

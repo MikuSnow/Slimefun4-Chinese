@@ -611,4 +611,15 @@ public final class SlimefunUtils {
             return true;
         }
     }
+
+    /**
+     * Check whether the item is a kind of Dust or not.
+     *
+     * @param item The item need to check.
+     * @return Is the item a kind of Dust
+     */
+    public static boolean isDust(@Nonnull ItemStack item) {
+        SlimefunItem sfItem = SlimefunItem.getByItem(item);
+        return sfItem != null && sfItem.getId().endsWith("_DUST");
+    }
 }

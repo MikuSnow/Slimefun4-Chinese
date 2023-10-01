@@ -1,15 +1,11 @@
 package com.xzavier0722.mc.plugin.slimefun4.storage.adapter.mysql;
 
-import com.xzavier0722.mc.plugin.slimefun4.storage.adapter.IDataSourceAdapter;
-import com.xzavier0722.mc.plugin.slimefun4.storage.adapter.sqlcommon.ConnectionPool;
+import com.xzavier0722.mc.plugin.slimefun4.storage.adapter.sqlcommon.SqlCommonAdapter;
 import com.xzavier0722.mc.plugin.slimefun4.storage.adapter.sqlcommon.SqlUtils;
 import com.xzavier0722.mc.plugin.slimefun4.storage.common.DataScope;
 import com.xzavier0722.mc.plugin.slimefun4.storage.common.DataType;
 import com.xzavier0722.mc.plugin.slimefun4.storage.common.RecordKey;
 import com.xzavier0722.mc.plugin.slimefun4.storage.common.RecordSet;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.List;
 import static com.xzavier0722.mc.plugin.slimefun4.storage.adapter.sqlcommon.SqlConstants.FIELD_BACKPACK_ID;
 import static com.xzavier0722.mc.plugin.slimefun4.storage.adapter.sqlcommon.SqlConstants.FIELD_BACKPACK_NAME;
@@ -26,31 +22,7 @@ import static com.xzavier0722.mc.plugin.slimefun4.storage.adapter.sqlcommon.SqlC
 import static com.xzavier0722.mc.plugin.slimefun4.storage.adapter.sqlcommon.SqlConstants.FIELD_RESEARCH_KEY;
 import static com.xzavier0722.mc.plugin.slimefun4.storage.adapter.sqlcommon.SqlConstants.FIELD_SLIMEFUN_ID;
 
-public class MysqlAdapter implements IDataSourceAdapter<MysqlConfig> {
-    private ConnectionPool pool;
-    private MysqlConfig config;
-    private String profileTable, researchTable, backpackTable, bpInvTable;
-    private String blockRecordTable, blockDataTable, chunkDataTable, blockInvTable;
-
-    @Override
-    public void prepare(MysqlConfig config) {
-        // Manually trigger sqlite jdbc init, thanks MiraiMC screw up this.
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new IllegalStateException("No suitable jdbc driver found.", e);
-        }
-
-        pool = new ConnectionPool(() -> {
-            try {
-                return DriverManager.getConnection(config.jdbcUrl(), config.user(), config.passwd());
-            } catch (SQLException e) {
-                throw new IllegalStateException("Failed to create Mysql connection: ", e);
-            }
-        }, config.maxConnection());
-        this.config = config;
-    }
-
+public class MysqlAdapter extends SqlCommonAdapter<MysqlConfig> {
     @Override
     public void initStorage(DataType type) {
         switch (type) {
@@ -69,16 +41,6 @@ public class MysqlAdapter implements IDataSourceAdapter<MysqlConfig> {
                 createBlockStorageTables();
             }
         }
-    }
-
-    @Override
-    public void shutdown() {
-        pool.destroy();
-        pool = null;
-        profileTable = null;
-        researchTable = null;
-        backpackTable = null;
-        bpInvTable = null;
     }
 
     @Override
@@ -102,6 +64,11 @@ public class MysqlAdapter implements IDataSourceAdapter<MysqlConfig> {
         }
 
         var updateFields = key.getFields();
+
+        if (!updateFields.isEmpty() && key.getConditions().isEmpty()) {
+            throw new IllegalArgumentException("Condition is required for update statement!");
+        }
+
         executeSql(
                 "INSERT INTO " + mapTable(key.getScope()) + " (" + fieldStr.get() + ") "
                 + "VALUES (" + valStr + ")"
@@ -118,11 +85,11 @@ public class MysqlAdapter implements IDataSourceAdapter<MysqlConfig> {
     }
 
     @Override
-    public List<RecordSet> getData(RecordKey key) {
+    public List<RecordSet> getData(RecordKey key, boolean distinct) {
         return executeQuery(
-                "SELECT " + SqlUtils.buildFieldStr(key.getFields()).orElse("*")
-                +" FROM " + mapTable(key.getScope())
-                + SqlUtils.buildConditionStr(key.getConditions()) + ";"
+                (distinct ? "SELECT DISTINCT " : "SELECT ") + SqlUtils.buildFieldStr(key.getFields()).orElse("*")
+                        +" FROM " + mapTable(key.getScope())
+                        + SqlUtils.buildConditionStr(key.getConditions()) + ";"
         );
     }
 
@@ -255,47 +222,5 @@ public class MysqlAdapter implements IDataSourceAdapter<MysqlConfig> {
                 + "PRIMARY KEY (" + FIELD_LOCATION + ", " + FIELD_INVENTORY_SLOT + ")"
                 + ");"
         );
-    }
-
-    private void executeSql(String sql) {
-        Connection conn = null;
-        try {
-            conn = pool.getConn();
-            SqlUtils.execSql(conn, sql);
-        } catch (SQLException | InterruptedException e) {
-            throw new IllegalStateException("An exception thrown while executing sql: " + sql, e);
-        } finally {
-            if (conn != null) {
-                pool.releaseConn(conn);
-            }
-        }
-    }
-
-    private List<RecordSet> executeQuery(String sql) {
-        Connection conn = null;
-        try {
-            conn = pool.getConn();
-            return SqlUtils.execQuery(conn, sql);
-        } catch (SQLException | InterruptedException e) {
-            throw new IllegalStateException("An exception thrown while executing sql: " + sql, e);
-        } finally {
-            if (conn != null) {
-                pool.releaseConn(conn);
-            }
-        }
-    }
-
-    private String mapTable(DataScope scope) {
-        return switch (scope) {
-            case PLAYER_PROFILE -> profileTable;
-            case BACKPACK_INVENTORY -> bpInvTable;
-            case BACKPACK_PROFILE -> backpackTable;
-            case PLAYER_RESEARCH -> researchTable;
-            case BLOCK_INVENTORY -> blockInvTable;
-            case CHUNK_DATA -> chunkDataTable;
-            case BLOCK_DATA -> blockDataTable;
-            case BLOCK_RECORD -> blockRecordTable;
-            case NONE -> throw new IllegalArgumentException("NONE cannot be a storage data scope!");
-        };
     }
 }
