@@ -11,7 +11,7 @@ import org.bukkit.OfflinePlayer;
  * @author StarWishsama
  */
 public class VaultIntegration {
-    private static Economy econ = null;
+    public static Economy econ = null;
 
     protected static void register(@Nonnull Slimefun plugin) {
         if (plugin.getServer().getPluginManager().isPluginEnabled("Vault")) {

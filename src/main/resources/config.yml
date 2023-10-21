@@ -47,6 +47,8 @@ researches:
   free-in-creative-mode: true
   # 是否在解锁时燃放烟花
   enable-fireworks: true
+  # 是否同时使用游戏币及经验解锁
+  use-both-unlock: false
   # 是否使用游戏币替代使用经验解锁
   use-money-unlock: false
   # 经验自动转换到游戏币倍率

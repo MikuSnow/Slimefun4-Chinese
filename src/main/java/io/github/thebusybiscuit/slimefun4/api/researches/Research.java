@@ -311,7 +311,9 @@ public class Research implements Keyed {
 
         boolean canUnlock;
 
-        if (VaultIntegration.isEnabled()) {
+        if (VaultIntegration.econ != null && Slimefun.getConfigManager().isUsBothUnlock()) {
+            canUnlock = VaultIntegration.getPlayerBalance(p) >= currencyCost && p.getLevel() >= levelCost;
+        } else if (VaultIntegration.isEnabled()) {
             canUnlock = VaultIntegration.getPlayerBalance(p) >= currencyCost;
         } else {
             canUnlock = p.getLevel() >= levelCost;

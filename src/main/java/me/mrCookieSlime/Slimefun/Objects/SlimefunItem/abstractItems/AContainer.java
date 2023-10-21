@@ -19,6 +19,7 @@ import io.github.thebusybiscuit.slimefun4.implementation.handlers.SimpleBlockBre
 import io.github.thebusybiscuit.slimefun4.implementation.operations.CraftingOperation;
 import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
+import io.github.thebusybiscuit.slimefun4.utils.UpdateSkullBlock;
 import io.github.thebusybiscuit.slimefun4.utils.itemstack.ItemStackWrapper;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +40,10 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 // TODO: Replace this with "AbstractContainer" and "AbstractElectricalMachine" classes.
 public abstract class AContainer extends SlimefunItem

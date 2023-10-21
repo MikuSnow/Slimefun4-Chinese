@@ -311,25 +311,47 @@ public class SurvivalSlimefunGuide implements SlimefunGuideImplementation {
             menu.addMenuClickHandler(index, ChestMenuUtils.getEmptyClickHandler());
         } else if (isSurvivalMode() && research != null && !profile.hasUnlocked(research)) {
             String lore;
+            String lore2 = "";
 
-            if (VaultIntegration.isEnabled()) {
+            if (VaultIntegration.econ != null && Slimefun.getConfigManager().isUsBothUnlock()) {
+                lore = String.format("%.2f", research.getCurrencyCost()) + " 游戏币";
+            } else if (VaultIntegration.isEnabled()) {
                 lore = String.format("%.2f", research.getCurrencyCost()) + " 游戏币";
             } else {
                 lore = research.getLevelCost() + " 级经验";
             }
 
-            menu.addItem(
-                    index,
-                    new CustomItemStack(new CustomItemStack(
-                            ChestMenuUtils.getNoPermissionItem(),
-                            "&f" + ItemUtils.getItemName(sfitem.getItem()),
-                            "&7" + sfitem.getId(),
-                            "&4&l" + Slimefun.getLocalization().getMessage(p, "guide.locked"),
-                            "",
-                            "&a> 单击解锁",
-                            "",
-                            "&7需要 &b",
-                            lore)));
+
+            if (VaultIntegration.econ != null && Slimefun.getConfigManager().isUsBothUnlock()) {
+                menu.addItem(
+                        index,
+                        new CustomItemStack(new CustomItemStack(
+                                ChestMenuUtils.getNoPermissionItem(),
+                                "&f" + ItemUtils.getItemName(sfitem.getItem()),
+                                "&7" + sfitem.getId(),
+                                "&4&l" + Slimefun.getLocalization().getMessage(p, "guide.locked"),
+                                "",
+                                "&a> 单击解锁",
+                                "",
+                                "&7需要 &b",
+                                lore,
+                                lore2
+                        )));
+            } else {
+                menu.addItem(
+                        index,
+                        new CustomItemStack(new CustomItemStack(
+                                ChestMenuUtils.getNoPermissionItem(),
+                                "&f" + ItemUtils.getItemName(sfitem.getItem()),
+                                "&7" + sfitem.getId(),
+                                "&4&l" + Slimefun.getLocalization().getMessage(p, "guide.locked"),
+                                "",
+                                "&a> 单击解锁",
+                                "",
+                                "&7需要 &b",
+                                lore
+                        )));
+            }
             menu.addMenuClickHandler(index, (pl, slot, item, action) -> {
                 research.unlockFromGuide(this, p, profile, sfitem, itemGroup, page);
                 return false;

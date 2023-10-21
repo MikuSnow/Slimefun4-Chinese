@@ -153,7 +153,7 @@ messages:
     in-progress: "&f正在转换中..."
     wrong-type: "&c目前支持转换的方块: 已修复的刷怪笼"
   not-researched: '&4你的知识还不足以理解这个物品. &c你需要先解锁 &f"%item%"&f'
-  not-enough-xp: '&4你没有足够的经验来解锁这个研究'
+  not-enough-xp: '&4你没有足够的经验或金币来解锁这个研究'
   unlocked: '&b成功解锁研究 &7"%research%"'
   only-players: '&4这个指令只能在游戏内使用'
   unknown-player: '&4未知玩家: &c%player%'

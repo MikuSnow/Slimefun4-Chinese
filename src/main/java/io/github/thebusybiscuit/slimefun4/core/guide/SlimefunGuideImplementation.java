@@ -68,7 +68,10 @@ public interface SlimefunGuideImplementation {
         if (p.getGameMode() == GameMode.CREATIVE && Slimefun.getConfigManager().isFreeCreativeResearchingEnabled()) {
             research.unlock(p, true, callback);
         } else {
-            if (VaultIntegration.isEnabled()) {
+            if (VaultIntegration.econ != null && Slimefun.getConfigManager().isUsBothUnlock()) {
+                VaultIntegration.withdrawPlayer(p, research.getCurrencyCost());
+                p.setLevel(p.getLevel() - research.getLevelCost());
+            } else if (VaultIntegration.isEnabled()) {
                 VaultIntegration.withdrawPlayer(p, research.getCurrencyCost());
             } else {
                 p.setLevel(p.getLevel() - research.getLevelCost());

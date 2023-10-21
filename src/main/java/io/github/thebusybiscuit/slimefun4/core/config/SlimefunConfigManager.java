@@ -45,6 +45,7 @@ public class SlimefunConfigManager {
     private boolean logDuplicateBlockEntries;
     private boolean talismanActionBarMessages;
     private boolean useMoneyUnlock;
+    private boolean useBothUnlock;
     private boolean showVanillaRecipes;
     private boolean showHiddenItemGroupsInSearch;
     private boolean autoUpdate;
@@ -96,6 +97,7 @@ public class SlimefunConfigManager {
             logDuplicateBlockEntries = pluginConfig.getBoolean("options.log-duplicate-block-entries");
             talismanActionBarMessages = pluginConfig.getBoolean("talismans.use-actionbar");
             useMoneyUnlock = pluginConfig.getBoolean("researches.use-money-unlock");
+            useBothUnlock = pluginConfig.getBoolean("researches.use-both-unlock");
             showVanillaRecipes = pluginConfig.getBoolean("guide.show-vanilla-recipes");
             showHiddenItemGroupsInSearch = pluginConfig.getBoolean("guide.show-hidden-item-groups-in-search");
             autoUpdate = pluginConfig.getBoolean("options.auto-update");
@@ -248,6 +250,10 @@ public class SlimefunConfigManager {
 
     public boolean isUseMoneyUnlock() {
         return useMoneyUnlock;
+    }
+
+    public boolean isUsBothUnlock() {
+        return useBothUnlock;
     }
 
     public void setShowVanillaRecipes(boolean enabled) {
