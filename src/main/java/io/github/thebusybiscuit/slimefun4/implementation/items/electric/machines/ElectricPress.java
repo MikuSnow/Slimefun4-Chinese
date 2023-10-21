@@ -1,10 +1,5 @@
 package io.github.thebusybiscuit.slimefun4.implementation.items.electric.machines;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-
 import io.github.bakedlibs.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
@@ -13,13 +8,15 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.attributes.RecipeDisplayItem;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-
+import javax.annotation.ParametersAreNonnullByDefault;
 import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * The {@link ElectricPress} is a pretty simple electrical machine.
  * It allows you to compact items into their block variant, e.g. 9 diamonds into a diamond block.
- * 
+ *
  * @author TheBusyBiscuit
  *
  */
@@ -89,18 +86,16 @@ public class ElectricPress extends AContainer implements RecipeDisplayItem {
 
     @ParametersAreNonnullByDefault
     private void addRecipe(int seconds, ItemStack input, ItemStack output) {
-        registerRecipe(seconds, new ItemStack[] { input }, new ItemStack[] { output });
+        registerRecipe(seconds, new ItemStack[] {input}, new ItemStack[] {output});
     }
 
     @Override
     public ItemStack getProgressBar() {
         return new ItemStack(Material.IRON_HOE);
-
     }
 
     @Override
     public String getMachineIdentifier() {
         return "ELECTRIC_PRESS";
-
     }
 }

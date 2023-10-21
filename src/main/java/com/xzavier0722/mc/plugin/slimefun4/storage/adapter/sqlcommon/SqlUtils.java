@@ -1,21 +1,5 @@
 package com.xzavier0722.mc.plugin.slimefun4.storage.adapter.sqlcommon;
 
-import com.xzavier0722.mc.plugin.slimefun4.storage.common.DataScope;
-import com.xzavier0722.mc.plugin.slimefun4.storage.common.FieldKey;
-import com.xzavier0722.mc.plugin.slimefun4.storage.common.FieldMapper;
-import com.xzavier0722.mc.plugin.slimefun4.storage.common.RecordSet;
-import io.github.bakedlibs.dough.collections.Pair;
-import io.github.thebusybiscuit.slimefun4.core.debug.Debug;
-import io.github.thebusybiscuit.slimefun4.core.debug.TestCase;
-import java.sql.Connection;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import static com.xzavier0722.mc.plugin.slimefun4.storage.adapter.sqlcommon.SqlConstants.FIELD_BACKPACK_ID;
 import static com.xzavier0722.mc.plugin.slimefun4.storage.adapter.sqlcommon.SqlConstants.FIELD_BACKPACK_NAME;
 import static com.xzavier0722.mc.plugin.slimefun4.storage.adapter.sqlcommon.SqlConstants.FIELD_BACKPACK_NUM;
@@ -39,9 +23,27 @@ import static com.xzavier0722.mc.plugin.slimefun4.storage.adapter.sqlcommon.SqlC
 import static com.xzavier0722.mc.plugin.slimefun4.storage.adapter.sqlcommon.SqlConstants.TABLE_NAME_PLAYER_PROFILE;
 import static com.xzavier0722.mc.plugin.slimefun4.storage.adapter.sqlcommon.SqlConstants.TABLE_NAME_PLAYER_RESEARCH;
 
+import com.xzavier0722.mc.plugin.slimefun4.storage.common.DataScope;
+import com.xzavier0722.mc.plugin.slimefun4.storage.common.FieldKey;
+import com.xzavier0722.mc.plugin.slimefun4.storage.common.FieldMapper;
+import com.xzavier0722.mc.plugin.slimefun4.storage.common.RecordSet;
+import io.github.bakedlibs.dough.collections.Pair;
+import io.github.thebusybiscuit.slimefun4.core.debug.Debug;
+import io.github.thebusybiscuit.slimefun4.core.debug.TestCase;
+import java.sql.Connection;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 public class SqlUtils {
 
     private static final FieldMapper<String> mapper;
+
     static {
         var fieldMap = new HashMap<FieldKey, String>();
         fieldMap.put(FieldKey.PLAYER_UUID, FIELD_PLAYER_UUID);
@@ -94,19 +96,21 @@ public class SqlUtils {
         if (fields.isEmpty()) {
             return Optional.empty();
         }
-        return Optional.of(String.join(", ", fields.stream().map(SqlUtils::mapField).toList()));
+        return Optional.of(
+                String.join(", ", fields.stream().map(SqlUtils::mapField).toList()));
     }
+
     public static String buildConditionStr(List<Pair<FieldKey, String>> conditions) {
         if (conditions.isEmpty()) {
             return "";
         }
 
-        return " WHERE " + String.join(
-                " AND ",
-                conditions.stream().map(
-                        condition -> buildKvStr(condition.getFirstValue(), condition.getSecondValue())
-                ).toList()
-        );
+        return " WHERE "
+                + String.join(
+                        " AND ",
+                        conditions.stream()
+                                .map(condition -> buildKvStr(condition.getFirstValue(), condition.getSecondValue()))
+                                .toList());
     }
 
     public static String buildKvStr(FieldKey key, String val) {

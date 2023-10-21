@@ -1,10 +1,10 @@
 package io.github.thebusybiscuit.slimefun4.implementation.listeners.entity;
 
-import com.xzavier0722.mc.plugin.slimefun4.storage.util.StorageCacheUtils;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.core.attributes.WitherProof;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import javax.annotation.Nonnull;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Wither;
@@ -12,14 +12,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 
-import javax.annotation.Nonnull;
-
 /**
  * This {@link Listener} is responsible for implementing the functionality of blocks that
  * were marked as {@link WitherProof} to not be destroyed by a {@link Wither}.
- * 
+ *
  * @author TheBusyBiscuit
- * 
+ *
  * @see WitherProof
  *
  */
@@ -38,7 +36,8 @@ public class WitherListener implements Listener {
             var item = blockData == null ? null : SlimefunItem.getById(blockData.getSfId());
 
             // Hardened Glass is excluded from here
-            if (item instanceof WitherProof witherProofBlock && !item.getId().equals(SlimefunItems.HARDENED_GLASS.getItemId())) {
+            if (item instanceof WitherProof witherProofBlock
+                    && !item.getId().equals(SlimefunItems.HARDENED_GLASS.getItemId())) {
                 e.setCancelled(true);
                 witherProofBlock.onAttack(block, (Wither) e.getEntity());
                 return;
@@ -56,5 +55,4 @@ public class WitherListener implements Listener {
             }
         }
     }
-
 }

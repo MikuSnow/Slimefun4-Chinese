@@ -11,6 +11,9 @@ import io.github.thebusybiscuit.slimefun4.core.attributes.NotPlaceable;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ToolUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import org.bukkit.Axis;
 import org.bukkit.Effect;
 import org.bukkit.Material;
@@ -19,10 +22,6 @@ import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Orientable;
 import org.bukkit.inventory.ItemStack;
-
-import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.List;
 
 /**
  * The {@link LumberAxe} is a powerful tool which can chop entire trees.
@@ -52,7 +51,9 @@ public class LumberAxe extends SlimefunItem implements NotPlaceable {
                 logs.remove(e.getBlock());
 
                 for (Block b : logs) {
-                    if (!StorageCacheUtils.hasBlock(b.getLocation()) && Slimefun.getProtectionManager().hasPermission(e.getPlayer(), b, Interaction.BREAK_BLOCK)) {
+                    if (!StorageCacheUtils.hasBlock(b.getLocation())
+                            && Slimefun.getProtectionManager()
+                                    .hasPermission(e.getPlayer(), b, Interaction.BREAK_BLOCK)) {
                         breakLog(b);
                     }
                 }
@@ -72,7 +73,9 @@ public class LumberAxe extends SlimefunItem implements NotPlaceable {
                     logs.remove(block);
 
                     for (Block b : logs) {
-                        if (!StorageCacheUtils.hasBlock(b.getLocation()) && Slimefun.getProtectionManager().hasPermission(e.getPlayer(), b, Interaction.BREAK_BLOCK)) {
+                        if (!StorageCacheUtils.hasBlock(b.getLocation())
+                                && Slimefun.getProtectionManager()
+                                        .hasPermission(e.getPlayer(), b, Interaction.BREAK_BLOCK)) {
                             stripLog(b);
                         }
                     }

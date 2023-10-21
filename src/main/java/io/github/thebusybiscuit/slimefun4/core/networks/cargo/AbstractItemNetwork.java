@@ -1,14 +1,17 @@
 package io.github.thebusybiscuit.slimefun4.core.networks.cargo;
 
+import io.github.thebusybiscuit.slimefun4.api.network.Network;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-
+import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
+import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -17,17 +20,10 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.inventory.ItemStack;
 
-import io.github.thebusybiscuit.slimefun4.api.network.Network;
-import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
-
-import me.mrCookieSlime.Slimefun.api.inventory.DirtyChestMenu;
-import me.mrCookieSlime.Slimefun.api.item_transport.ItemTransportFlow;
-
 /**
  * An abstract super class of {@link CargoNet} that handles
  * interactions with ChestTerminal.
- * 
+ *
  * @author TheBusyBiscuit
  *
  */
@@ -59,7 +55,8 @@ abstract class AbstractItemNetwork extends Network {
                     return Optional.of(block.getRelative(cached));
                 }
 
-                BlockFace face = ((Directional) block.getBlockData()).getFacing().getOppositeFace();
+                BlockFace face =
+                        ((Directional) block.getBlockData()).getFacing().getOppositeFace();
                 connectorCache.put(l, face);
                 return Optional.of(block.getRelative(face));
             }
@@ -77,7 +74,7 @@ abstract class AbstractItemNetwork extends Network {
     /**
      * This will mark the {@link ItemFilter} of the given node dirty.
      * It will also invalidate the cached rotation.
-     * 
+     *
      * @param node
      *            The {@link Location} of the cargo node
      */
@@ -131,5 +128,4 @@ abstract class AbstractItemNetwork extends Network {
             return filter;
         }
     }
-
 }

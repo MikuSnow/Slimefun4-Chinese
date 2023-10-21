@@ -1,15 +1,16 @@
 package io.github.thebusybiscuit.slimefun4.implementation.listeners;
 
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.implementation.items.tools.GrapplingHook;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Bat;
@@ -28,17 +29,13 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-import io.github.thebusybiscuit.slimefun4.implementation.items.tools.GrapplingHook;
-
 /**
  * This {@link Listener} is responsible for the mechanics behind the {@link GrapplingHook}.
- * 
+ *
  * @author TheBusyBiscuit
  * @author Linox
  * @author BlackBeltPanda
- * 
+ *
  * @see GrapplingHook
  *
  */
@@ -72,11 +69,13 @@ public class GrapplingHookListener implements Listener {
             return;
         }
 
-        Slimefun.runSync(() -> {
-            if (e.getEntity() instanceof Arrow arrow) {
-                handleGrapplingHook(arrow);
-            }
-        }, 2L);
+        Slimefun.runSync(
+                () -> {
+                    if (e.getEntity() instanceof Arrow arrow) {
+                        handleGrapplingHook(arrow);
+                    }
+                },
+                2L);
     }
 
     @EventHandler
@@ -119,7 +118,9 @@ public class GrapplingHookListener implements Listener {
             return;
         }
 
-        if (e.getEntity() instanceof Player && e.getCause() == DamageCause.FALL && invulnerability.remove(e.getEntity().getUniqueId())) {
+        if (e.getEntity() instanceof Player
+                && e.getCause() == DamageCause.FALL
+                && invulnerability.remove(e.getEntity().getUniqueId())) {
             e.setCancelled(true);
         }
     }
@@ -164,7 +165,8 @@ public class GrapplingHookListener implements Listener {
 
                 if (player.getLocation().distance(target) < 3.0) {
                     if (target.getY() <= player.getLocation().getY()) {
-                        velocity = target.toVector().subtract(player.getLocation().toVector());
+                        velocity =
+                                target.toVector().subtract(player.getLocation().toVector());
                     }
                 } else {
                     Location l = player.getLocation();
@@ -197,25 +199,30 @@ public class GrapplingHookListener implements Listener {
     }
 
     @ParametersAreNonnullByDefault
-    public void addGrapplingHook(Player p, Arrow arrow, Bat bat, boolean dropItem, long despawnTicks, boolean wasConsumed) {
+    public void addGrapplingHook(
+            Player p, Arrow arrow, Bat bat, boolean dropItem, long despawnTicks, boolean wasConsumed) {
         GrapplingHookEntity hook = new GrapplingHookEntity(p, arrow, bat, dropItem, wasConsumed);
         UUID uuid = p.getUniqueId();
 
         activeHooks.put(uuid, hook);
 
         // To fix issue #253
-        Slimefun.runSync(() -> {
-            GrapplingHookEntity entity = activeHooks.get(uuid);
+        Slimefun.runSync(
+                () -> {
+                    GrapplingHookEntity entity = activeHooks.get(uuid);
 
-            if (entity != null) {
-                Slimefun.getBowListener().getProjectileData().remove(uuid);
-                entity.remove();
+                    if (entity != null) {
+                        Slimefun.getBowListener().getProjectileData().remove(uuid);
+                        entity.remove();
 
-                Slimefun.runSync(() -> {
-                    activeHooks.remove(uuid);
-                    invulnerability.remove(uuid);
-                }, 20L);
-            }
-        }, despawnTicks);
+                        Slimefun.runSync(
+                                () -> {
+                                    activeHooks.remove(uuid);
+                                    invulnerability.remove(uuid);
+                                },
+                                20L);
+                    }
+                },
+                despawnTicks);
     }
 }

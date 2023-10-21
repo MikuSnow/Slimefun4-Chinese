@@ -1,14 +1,12 @@
 package io.github.thebusybiscuit.slimefun4.implementation.items.teleporter;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import javax.annotation.ParametersAreNonnullByDefault;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * The {@link SharedActivationPlate} is a teleporter activation plate
@@ -22,7 +20,8 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 public class SharedActivationPlate extends AbstractTeleporterPlate {
 
     @ParametersAreNonnullByDefault
-    public SharedActivationPlate(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public SharedActivationPlate(
+            ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe);
     }
 

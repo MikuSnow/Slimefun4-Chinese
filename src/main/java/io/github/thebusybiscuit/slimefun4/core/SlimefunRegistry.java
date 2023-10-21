@@ -14,17 +14,6 @@ import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlock;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.guide.CheatSheetSlimefunGuide;
 import io.github.thebusybiscuit.slimefun4.implementation.guide.SurvivalSlimefunGuide;
-import me.mrCookieSlime.Slimefun.api.BlockInfoConfig;
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
-import org.apache.commons.lang.Validate;
-import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Piglin;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
@@ -36,11 +25,21 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.annotation.Nonnull;
+import me.mrCookieSlime.Slimefun.api.BlockInfoConfig;
+import me.mrCookieSlime.Slimefun.api.inventory.BlockMenuPreset;
+import org.apache.commons.lang.Validate;
+import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Piglin;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * This class houses a lot of instances of {@link Map} and {@link List} that hold
  * various mappings and collections related to {@link SlimefunItem}.
- * 
+ *
  * @author TheBusyBiscuit
  *
  */
@@ -92,7 +91,7 @@ public final class SlimefunRegistry {
 
     /**
      * This returns a {@link List} containing every enabled {@link ItemGroup}.
-     * 
+     *
      * @return {@link List} containing every enabled {@link ItemGroup}
      */
     @Nonnull
@@ -102,7 +101,7 @@ public final class SlimefunRegistry {
 
     /**
      * This {@link List} contains every {@link SlimefunItem}, even disabled items.
-     * 
+     *
      * @return A {@link List} containing every {@link SlimefunItem}
      */
     public @Nonnull List<SlimefunItem> getAllSlimefunItems() {
@@ -123,7 +122,7 @@ public final class SlimefunRegistry {
 
     /**
      * This {@link List} contains every <strong>enabled</strong> {@link SlimefunItem}.
-     * 
+     *
      * @return A {@link List} containing every enabled {@link SlimefunItem}
      */
     @Nonnull
@@ -133,7 +132,7 @@ public final class SlimefunRegistry {
 
     /**
      * This returns a {@link List} containing every enabled {@link Research}.
-     * 
+     *
      * @return A {@link List} containing every enabled {@link Research}
      */
     @Nonnull
@@ -144,7 +143,7 @@ public final class SlimefunRegistry {
     /**
      * This method returns a {@link Set} containing the {@link UUID} of every
      * {@link Player} who is currently unlocking a {@link Research}.
-     * 
+     *
      * @return A {@link Set} holding the {@link UUID} from every {@link Player}
      *         who is currently unlocking a {@link Research}
      */
@@ -160,7 +159,7 @@ public final class SlimefunRegistry {
 
     /**
      * This method returns a {@link List} of every enabled {@link MultiBlock}.
-     * 
+     *
      * @return A {@link List} containing every enabled {@link MultiBlock}
      */
     @Nonnull
@@ -175,10 +174,10 @@ public final class SlimefunRegistry {
      * This mainly only exists for internal purposes, if you want to open a certain section
      * using the {@link SlimefunGuide}, then please use the static methods provided in the
      * {@link SlimefunGuide} class.
-     * 
+     *
      * @param mode
      *            The {@link SlimefunGuideMode}
-     * 
+     *
      * @return The corresponding {@link SlimefunGuideImplementation}
      */
     @Nonnull
@@ -197,7 +196,7 @@ public final class SlimefunRegistry {
     /**
      * This returns a {@link Map} connecting the {@link EntityType} with a {@link Set}
      * of {@link ItemStack ItemStacks} which would be dropped when an {@link Entity} of that type was killed.
-     * 
+     *
      * @return The {@link Map} of custom mob drops
      */
     @Nonnull
@@ -208,7 +207,7 @@ public final class SlimefunRegistry {
     /**
      * This returns a {@link Set} of {@link ItemStack ItemStacks} which can be obtained by bartering
      * with {@link Piglin Piglins}.
-     * 
+     *
      * @return A {@link Set} of bartering drops
      */
     @Nonnull

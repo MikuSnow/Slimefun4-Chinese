@@ -1,12 +1,17 @@
 package io.github.thebusybiscuit.slimefun4.implementation.listeners;
 
-import java.util.UUID;
-
-import javax.annotation.Nonnull;
-
 import com.xzavier0722.mc.plugin.slimefun4.storage.callback.IAsyncReadCallback;
 import com.xzavier0722.mc.plugin.slimefun4.storage.controller.SlimefunBlockData;
 import com.xzavier0722.mc.plugin.slimefun4.storage.util.StorageCacheUtils;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
+import io.github.thebusybiscuit.slimefun4.implementation.items.elevator.ElevatorPlate;
+import io.github.thebusybiscuit.slimefun4.implementation.items.teleporter.AbstractTeleporterPlate;
+import io.github.thebusybiscuit.slimefun4.implementation.items.teleporter.Teleporter;
+import io.github.thebusybiscuit.slimefun4.implementation.items.teleporter.TeleporterPylon;
+import java.util.UUID;
+import javax.annotation.Nonnull;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -16,17 +21,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import io.github.thebusybiscuit.slimefun4.implementation.items.elevator.ElevatorPlate;
-import io.github.thebusybiscuit.slimefun4.implementation.items.teleporter.AbstractTeleporterPlate;
-import io.github.thebusybiscuit.slimefun4.implementation.items.teleporter.Teleporter;
-import io.github.thebusybiscuit.slimefun4.implementation.items.teleporter.TeleporterPylon;
-
 /**
  * This {@link Listener} is responsible for the {@link Teleporter} (and {@link ElevatorPlate}).
- * 
+ *
  * @author TheBusyBiscuit
  * @author Walshy
  * @author Sfiguz7
@@ -40,6 +37,7 @@ public class TeleporterListener implements Listener {
         BlockFace.NORTH, BlockFace.NORTH_EAST, BlockFace.EAST, BlockFace.SOUTH_EAST,
         BlockFace.SOUTH, BlockFace.SOUTH_WEST, BlockFace.WEST, BlockFace.NORTH_WEST
     };
+
     // @formatter:on
 
     public TeleporterListener(@Nonnull Slimefun plugin) {
@@ -67,7 +65,8 @@ public class TeleporterListener implements Listener {
             elevator.openInterface(p, b);
         } else if (item instanceof AbstractTeleporterPlate teleporterPlate && teleporterPlate.hasAccess(p, b)) {
             // Pressure plate was a teleporter
-            var blockData = StorageCacheUtils.getBlock(b.getRelative(BlockFace.DOWN).getLocation());
+            var blockData =
+                    StorageCacheUtils.getBlock(b.getRelative(BlockFace.DOWN).getLocation());
             if (blockData == null) {
                 return;
             }
@@ -78,9 +77,9 @@ public class TeleporterListener implements Listener {
                 if (blockData.isDataLoaded()) {
                     teleport(blockData.getData("owner"), p, block);
                 } else {
-                    Slimefun.getDatabaseManager().getBlockDataController().loadBlockDataAsync(
-                            blockData,
-                            new IAsyncReadCallback<>() {
+                    Slimefun.getDatabaseManager()
+                            .getBlockDataController()
+                            .loadBlockDataAsync(blockData, new IAsyncReadCallback<>() {
                                 @Override
                                 public boolean runOnMainThread() {
                                     return true;
@@ -90,8 +89,7 @@ public class TeleporterListener implements Listener {
                                 public void onResult(SlimefunBlockData result) {
                                     teleport(blockData.getData("owner"), p, block);
                                 }
-                            }
-                    );
+                            });
                 }
             }
         }
@@ -104,10 +102,10 @@ public class TeleporterListener implements Listener {
     /**
      * This methoc checks if the given teleporter {@link Block} is surrounded
      * by all the necessary {@link TeleporterPylon}s.
-     * 
+     *
      * @param teleporter
      *            The teleporter {@link Block}
-     * 
+     *
      * @return Whether the teleporter is surrounded by pylons.
      */
     private boolean checkForPylons(@Nonnull Block teleporter) {
@@ -119,5 +117,4 @@ public class TeleporterListener implements Listener {
 
         return true;
     }
-
 }

@@ -25,8 +25,7 @@ public class BlockStorageMigrator implements IMigrator {
     private static final Gson gson = new Gson();
     private static volatile boolean migrateLock = false;
 
-    private BlockStorageMigrator() {
-    }
+    private BlockStorageMigrator() {}
 
     public static BlockStorageMigrator getInstance() {
         return instance;
@@ -138,9 +137,9 @@ public class BlockStorageMigrator implements IMigrator {
             var z = Integer.parseInt(arr[3]);
 
             var loc = new Location(world, x, y, z);
-            var blockData = Slimefun.getDatabaseManager().getBlockDataController().createBlock(loc, sfId);
-            Map<String, String> data = gson.fromJson(jsonStr, new TypeToken<Map<String, String>>() {
-            }.getType());
+            var blockData =
+                    Slimefun.getDatabaseManager().getBlockDataController().createBlock(loc, sfId);
+            Map<String, String> data = gson.fromJson(jsonStr, new TypeToken<Map<String, String>>() {}.getType());
             for (var each : data.entrySet()) {
                 var key = each.getKey();
                 if ("id".equals(key)) {
@@ -206,9 +205,10 @@ public class BlockStorageMigrator implements IMigrator {
                 }
 
                 var c = w.getChunkAt(Integer.parseInt(arr[2]), Integer.parseInt(arr[3]));
-                Map<String, String> data = gson.fromJson(cfg.getString(key), new TypeToken<Map<String, String>>() {
-                }.getType());
-                var chunkData = Slimefun.getDatabaseManager().getBlockDataController().getChunkData(c);
+                Map<String, String> data =
+                        gson.fromJson(cfg.getString(key), new TypeToken<Map<String, String>>() {}.getType());
+                var chunkData =
+                        Slimefun.getDatabaseManager().getBlockDataController().getChunkData(c);
                 data.entrySet().forEach(each -> chunkData.setData(each.getKey(), each.getValue()));
             } catch (Throwable e) {
                 Slimefun.logger().log(Level.SEVERE, "迁移区块数据时发生错误: " + key, e);

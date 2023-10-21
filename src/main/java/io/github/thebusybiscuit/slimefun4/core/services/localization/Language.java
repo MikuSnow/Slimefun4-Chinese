@@ -1,23 +1,20 @@
 package io.github.thebusybiscuit.slimefun4.core.services.localization;
 
+import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuide;
+import io.github.thebusybiscuit.slimefun4.core.services.LocalizationService;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.Locale;
 import java.util.Map;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
 import org.apache.commons.lang.Validate;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import io.github.thebusybiscuit.slimefun4.core.guide.SlimefunGuide;
-import io.github.thebusybiscuit.slimefun4.core.services.LocalizationService;
-import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-import io.github.thebusybiscuit.slimefun4.utils.SlimefunUtils;
 
 /**
  * This Class represents a {@link Language} that Slimefun can recognize and use.
@@ -82,8 +79,7 @@ public final class Language {
         }
     }
 
-    @Nullable
-    FileConfiguration getFile(@Nonnull LanguageFile file) {
+    @Nullable FileConfiguration getFile(@Nonnull LanguageFile file) {
         return files.get(file);
     }
 
@@ -134,10 +130,7 @@ public final class Language {
     @Nonnull
     FileConfiguration[] getFiles() {
         // @formatter:off
-        return Arrays.stream(LanguageFile.valuesCached)
-                .map(this::getFile)
-                .toArray(FileConfiguration[]::new);
+        return Arrays.stream(LanguageFile.valuesCached).map(this::getFile).toArray(FileConfiguration[]::new);
         // @formatter:on
     }
-
 }

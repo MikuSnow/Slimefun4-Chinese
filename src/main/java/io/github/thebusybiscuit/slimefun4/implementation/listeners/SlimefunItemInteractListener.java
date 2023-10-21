@@ -75,7 +75,6 @@ public class SlimefunItemInteractListener implements Listener {
              * This only applies for non-denied events because we do not want to
              * override any protective checks.
              */
-
             if (e.useInteractedBlock() != Result.DENY) {
                 e.setUseInteractedBlock(event.useBlock());
             }
@@ -115,7 +114,8 @@ public class SlimefunItemInteractListener implements Listener {
                 return false;
             }
 
-            boolean interactable = sfItem.callItemHandler(BlockUseHandler.class, handler -> handler.onRightClick(event));
+            boolean interactable =
+                    sfItem.callItemHandler(BlockUseHandler.class, handler -> handler.onRightClick(event));
 
             if (!interactable) {
                 Player p = event.getPlayer();
@@ -144,9 +144,9 @@ public class SlimefunItemInteractListener implements Listener {
                 if (blockData.isDataLoaded()) {
                     openMenu(blockData.getBlockMenu(), clickedBlock, p);
                 } else {
-                    Slimefun.getDatabaseManager().getBlockDataController().loadBlockDataAsync(
-                            blockData,
-                            new IAsyncReadCallback<>() {
+                    Slimefun.getDatabaseManager()
+                            .getBlockDataController()
+                            .loadBlockDataAsync(blockData, new IAsyncReadCallback<>() {
                                 @Override
                                 public boolean runOnMainThread() {
                                     return true;
@@ -160,8 +160,7 @@ public class SlimefunItemInteractListener implements Listener {
 
                                     openMenu(result.getBlockMenu(), clickedBlock, p);
                                 }
-                            }
-                    );
+                            });
                 }
             }
         } catch (Exception | LinkageError x) {
@@ -178,5 +177,4 @@ public class SlimefunItemInteractListener implements Listener {
             }
         }
     }
-
 }

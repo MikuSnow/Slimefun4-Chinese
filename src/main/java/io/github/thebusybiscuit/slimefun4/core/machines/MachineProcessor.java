@@ -1,24 +1,20 @@
 package io.github.thebusybiscuit.slimefun4.core.machines;
 
+import io.github.bakedlibs.dough.blocks.BlockPosition;
+import io.github.thebusybiscuit.slimefun4.api.events.AsyncMachineOperationFinishEvent;
+import io.github.thebusybiscuit.slimefun4.core.attributes.MachineProcessHolder;
+import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
+import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
-
-import io.github.bakedlibs.dough.blocks.BlockPosition;
-import io.github.thebusybiscuit.slimefun4.api.events.AsyncMachineOperationFinishEvent;
-import io.github.thebusybiscuit.slimefun4.core.attributes.MachineProcessHolder;
-import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
-
-import me.mrCookieSlime.Slimefun.api.inventory.BlockMenu;
 
 /**
  * A {@link MachineProcessor} manages different {@link MachineOperation}s and handles
@@ -67,8 +63,7 @@ public class MachineProcessor<T extends MachineOperation> {
      *
      * @return The progress bar icon or null
      */
-    @Nullable
-    public ItemStack getProgressBar() {
+    @Nullable public ItemStack getProgressBar() {
         return progressBar;
     }
 
@@ -145,8 +140,7 @@ public class MachineProcessor<T extends MachineOperation> {
      *
      * @return The current {@link MachineOperation} or null.
      */
-    @Nullable
-    public T getOperation(@Nonnull Location loc) {
+    @Nullable public T getOperation(@Nonnull Location loc) {
         Validate.notNull(loc, "The location cannot be null");
 
         return getOperation(new BlockPosition(loc));
@@ -160,8 +154,7 @@ public class MachineProcessor<T extends MachineOperation> {
      *
      * @return The current {@link MachineOperation} or null.
      */
-    @Nullable
-    public T getOperation(@Nonnull Block b) {
+    @Nullable public T getOperation(@Nonnull Block b) {
         Validate.notNull(b, "The Block cannot be null");
 
         return getOperation(new BlockPosition(b));
@@ -177,8 +170,7 @@ public class MachineProcessor<T extends MachineOperation> {
      *
      * @return The current {@link MachineOperation} or null.
      */
-    @Nullable
-    public T getOperation(@Nonnull BlockPosition pos) {
+    @Nullable public T getOperation(@Nonnull BlockPosition pos) {
         Validate.notNull(pos, "The BlockPosition must not be null");
 
         return machines.get(pos);
@@ -262,5 +254,4 @@ public class MachineProcessor<T extends MachineOperation> {
             ChestMenuUtils.updateProgressbar(inv, slot, remainingTicks, totalTicks, getProgressBar());
         }
     }
-
 }

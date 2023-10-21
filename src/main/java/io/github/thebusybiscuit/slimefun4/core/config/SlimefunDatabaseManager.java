@@ -9,8 +9,8 @@ import com.xzavier0722.mc.plugin.slimefun4.storage.adapter.sqlite.SqliteAdapter;
 import com.xzavier0722.mc.plugin.slimefun4.storage.adapter.sqlite.SqliteConfig;
 import com.xzavier0722.mc.plugin.slimefun4.storage.common.DataType;
 import com.xzavier0722.mc.plugin.slimefun4.storage.controller.BlockDataController;
-import com.xzavier0722.mc.plugin.slimefun4.storage.controller.ControllerHolder;
 import com.xzavier0722.mc.plugin.slimefun4.storage.controller.ChunkDataLoadMode;
+import com.xzavier0722.mc.plugin.slimefun4.storage.controller.ControllerHolder;
 import com.xzavier0722.mc.plugin.slimefun4.storage.controller.ProfileDataController;
 import com.xzavier0722.mc.plugin.slimefun4.storage.controller.StorageType;
 import io.github.bakedlibs.dough.config.Config;
@@ -30,7 +30,6 @@ public class SlimefunDatabaseManager {
     private StorageType blockDataStorageType;
     private IDataSourceAdapter<?> profileAdapter;
     private IDataSourceAdapter<?> blockStorageAdapter;
-
 
     public SlimefunDatabaseManager(Slimefun plugin) {
         this.plugin = plugin;
@@ -56,7 +55,8 @@ public class SlimefunDatabaseManager {
 
             initAdapter(blockDataStorageType, DataType.BLOCK_STORAGE, blockStorageConfig);
 
-            var blockDataController = ControllerHolder.createController(BlockDataController.class, blockDataStorageType);
+            var blockDataController =
+                    ControllerHolder.createController(BlockDataController.class, blockDataStorageType);
             blockDataController.init(blockStorageAdapter, readExecutorThread, writeExecutorThread);
 
             if (blockStorageConfig.getBoolean("delayedWriting.enable")) {
@@ -64,8 +64,7 @@ public class SlimefunDatabaseManager {
                 blockDataController.initDelayedSaving(
                         plugin,
                         blockStorageConfig.getInt("delayedWriting.delayedSecond"),
-                        blockStorageConfig.getInt("delayedWriting.forceSavePeriod")
-                );
+                        blockStorageConfig.getInt("delayedWriting.forceSavePeriod"));
             }
         } catch (IOException e) {
             plugin.getLogger().log(Level.SEVERE, "加载 Slimefun 方块存储适配器失败", e);
@@ -75,7 +74,8 @@ public class SlimefunDatabaseManager {
         try {
             profileStorageType = StorageType.valueOf(profileConfig.getString("storageType"));
             var readExecutorThread = profileConfig.getInt("readExecutorThread");
-            var writeExecutorThread = profileStorageType == StorageType.SQLITE ? 1 : profileConfig.getInt("writeExecutorThread");
+            var writeExecutorThread =
+                    profileStorageType == StorageType.SQLITE ? 1 : profileConfig.getInt("writeExecutorThread");
 
             initAdapter(profileStorageType, DataType.PLAYER_PROFILE, profileConfig);
             var profileController = ControllerHolder.createController(ProfileDataController.class, profileStorageType);
@@ -90,17 +90,15 @@ public class SlimefunDatabaseManager {
             case MYSQL -> {
                 var adapter = new MysqlAdapter();
 
-                adapter.prepare(
-                        new MysqlConfig(
-                                databaseConfig.getString("mysql.host"),
-                                databaseConfig.getInt("mysql.port"),
-                                databaseConfig.getString("mysql.database"),
-                                databaseConfig.getString("mysql.tablePrefix"),
-                                databaseConfig.getString("mysql.user"),
-                                databaseConfig.getString("mysql.password"),
-                                databaseConfig.getBoolean("mysql.useSSL"),
-                                databaseConfig.getInt("mysql.maxConnection")
-                        ));
+                adapter.prepare(new MysqlConfig(
+                        databaseConfig.getString("mysql.host"),
+                        databaseConfig.getInt("mysql.port"),
+                        databaseConfig.getString("mysql.database"),
+                        databaseConfig.getString("mysql.tablePrefix"),
+                        databaseConfig.getString("mysql.user"),
+                        databaseConfig.getString("mysql.password"),
+                        databaseConfig.getBoolean("mysql.useSSL"),
+                        databaseConfig.getInt("mysql.maxConnection")));
 
                 switch (dataType) {
                     case BLOCK_STORAGE -> blockStorageAdapter = adapter;
@@ -122,22 +120,21 @@ public class SlimefunDatabaseManager {
                         blockStorageAdapter = adapter;
                     }
                 }
-                adapter.prepare(new SqliteConfig(databasePath.getAbsolutePath(), databaseConfig.getInt("sqlite.maxConnection")));
+                adapter.prepare(new SqliteConfig(
+                        databasePath.getAbsolutePath(), databaseConfig.getInt("sqlite.maxConnection")));
             }
             case POSTGRESQL -> {
                 var adapter = new PostgreSqlAdapter();
 
-                adapter.prepare(
-                        new PostgreSqlConfig(
-                                databaseConfig.getString("postgresql.host"),
-                                databaseConfig.getInt("postgresql.port"),
-                                databaseConfig.getString("postgresql.database"),
-                                databaseConfig.getString("postgresql.tablePrefix"),
-                                databaseConfig.getString("postgresql.user"),
-                                databaseConfig.getString("postgresql.password"),
-                                databaseConfig.getBoolean("postgresql.useSSL"),
-                                databaseConfig.getInt("postgresql.maxConnection")
-                        ));
+                adapter.prepare(new PostgreSqlConfig(
+                        databaseConfig.getString("postgresql.host"),
+                        databaseConfig.getInt("postgresql.port"),
+                        databaseConfig.getString("postgresql.database"),
+                        databaseConfig.getString("postgresql.tablePrefix"),
+                        databaseConfig.getString("postgresql.user"),
+                        databaseConfig.getString("postgresql.password"),
+                        databaseConfig.getBoolean("postgresql.useSSL"),
+                        databaseConfig.getInt("postgresql.maxConnection")));
 
                 switch (dataType) {
                     case BLOCK_STORAGE -> blockStorageAdapter = adapter;
@@ -147,8 +144,7 @@ public class SlimefunDatabaseManager {
         }
     }
 
-    @Nullable
-    public ProfileDataController getProfileDataController() {
+    @Nullable public ProfileDataController getProfileDataController() {
         return ControllerHolder.getController(ProfileDataController.class, profileStorageType);
     }
 

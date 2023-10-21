@@ -36,11 +36,13 @@ public final class Slimefun {
     public static boolean hasPermission(Player p, SlimefunItem item, boolean message) {
         if (item == null) {
             return true;
-        } else if (io.github.thebusybiscuit.slimefun4.implementation.Slimefun.getPermissionsService().hasPermission(p, item)) {
+        } else if (io.github.thebusybiscuit.slimefun4.implementation.Slimefun.getPermissionsService()
+                .hasPermission(p, item)) {
             return true;
         } else {
             if (message) {
-                io.github.thebusybiscuit.slimefun4.implementation.Slimefun.getLocalization().sendMessage(p, "messages.no-permission", true);
+                io.github.thebusybiscuit.slimefun4.implementation.Slimefun.getLocalization()
+                        .sendMessage(p, "messages.no-permission", true);
             }
 
             return false;
@@ -66,13 +68,16 @@ public final class Slimefun {
     public static boolean isEnabled(Player p, SlimefunItem sfItem, boolean message) {
         if (sfItem.isDisabled()) {
             if (message) {
-                io.github.thebusybiscuit.slimefun4.implementation.Slimefun.getLocalization().sendMessage(p, "messages.disabled-item", true);
+                io.github.thebusybiscuit.slimefun4.implementation.Slimefun.getLocalization()
+                        .sendMessage(p, "messages.disabled-item", true);
             }
 
             return false;
-        } else if (!io.github.thebusybiscuit.slimefun4.implementation.Slimefun.getWorldSettingsService().isEnabled(p.getWorld(), sfItem)) {
+        } else if (!io.github.thebusybiscuit.slimefun4.implementation.Slimefun.getWorldSettingsService()
+                .isEnabled(p.getWorld(), sfItem)) {
             if (message) {
-                io.github.thebusybiscuit.slimefun4.implementation.Slimefun.getLocalization().sendMessage(p, "messages.disabled-in-world", true);
+                io.github.thebusybiscuit.slimefun4.implementation.Slimefun.getLocalization()
+                        .sendMessage(p, "messages.disabled-in-world", true);
             }
 
             return false;

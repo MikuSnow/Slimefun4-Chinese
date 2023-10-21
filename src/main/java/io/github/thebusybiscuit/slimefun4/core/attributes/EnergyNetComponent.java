@@ -20,12 +20,12 @@ import org.bukkit.Location;
  * This Interface, when attached to a class that inherits from {@link SlimefunItem}, marks
  * the Item as an electric Block.
  * This will make this Block interact with an {@link EnergyNet}.
- * 
+ *
  * You can specify the Type of Block via {@link EnergyNetComponent#getEnergyComponentType()}.
  * You can also specify a capacity for this Block via {@link EnergyNetComponent#getCapacity()}.
- * 
+ *
  * @author TheBusyBiscuit
- * 
+ *
  * @see EnergyNetComponentType
  * @see EnergyNet
  *
@@ -35,7 +35,7 @@ public interface EnergyNetComponent extends ItemAttribute {
     /**
      * This method returns the Type of {@link EnergyNetComponentType} this {@link SlimefunItem} represents.
      * It describes how this Block will interact with an {@link EnergyNet}.
-     * 
+     *
      * @return The {@link EnergyNetComponentType} this {@link SlimefunItem} represents.
      */
     @Nonnull
@@ -44,7 +44,7 @@ public interface EnergyNetComponent extends ItemAttribute {
     /**
      * This method returns the max amount of electricity this Block can hold.
      * If the capacity is zero, then this Block cannot hold any electricity.
-     * 
+     *
      * @return The max amount of electricity this Block can store.
      */
     int getCapacity();
@@ -52,7 +52,7 @@ public interface EnergyNetComponent extends ItemAttribute {
     /**
      * This returns whether this {@link EnergyNetComponent} can hold energy charges.
      * It returns true if {@link #getCapacity()} returns a number greater than zero.
-     * 
+     *
      * @return Whether this {@link EnergyNetComponent} can store energy.
      */
     default boolean isChargeable() {
@@ -61,10 +61,10 @@ public interface EnergyNetComponent extends ItemAttribute {
 
     /**
      * This returns the currently stored charge at a given {@link Location}.
-     * 
+     *
      * @param l
      *            The target {@link Location}
-     * 
+     *
      * @return The charge stored at that {@link Location}
      */
     default int getCharge(@Nonnull Location l) {
@@ -118,7 +118,7 @@ public interface EnergyNetComponent extends ItemAttribute {
      *            The target {@link Location}
      * @param data
      *            The data at this {@link Location}
-     * 
+     *
      * @return The charge stored at that {@link Location}
      */
     default int getCharge(@Nonnull Location l, @Nonnull SlimefunBlockData data) {
@@ -143,7 +143,7 @@ public interface EnergyNetComponent extends ItemAttribute {
      * This method sets the charge which is stored at a given {@link Location}
      * If this {@link EnergyNetComponent} is of type {@code EnergyNetComponentType.CAPACITOR}, then
      * this method will automatically update the texture of this {@link Capacitor} as well.
-     * 
+     *
      * @param l
      *            The target {@link Location}
      * @param charge
@@ -182,7 +182,14 @@ public interface EnergyNetComponent extends ItemAttribute {
                 }
             }
         } catch (Exception | LinkageError x) {
-            Slimefun.logger().log(Level.SEVERE, x, () -> "Exception while trying to set the energy-charge for \"" + getId() + "\" at " + new BlockPosition(l));
+            Slimefun.logger()
+                    .log(
+                            Level.SEVERE,
+                            x,
+                            () -> "Exception while trying to set the energy-charge for \""
+                                    + getId()
+                                    + "\" at "
+                                    + new BlockPosition(l));
         }
     }
 
@@ -209,7 +216,14 @@ public interface EnergyNetComponent extends ItemAttribute {
                 }
             }
         } catch (Exception | LinkageError x) {
-            Slimefun.logger().log(Level.SEVERE, x, () -> "Exception while trying to add an energy-charge for \"" + getId() + "\" at " + new BlockPosition(l));
+            Slimefun.logger()
+                    .log(
+                            Level.SEVERE,
+                            x,
+                            () -> "Exception while trying to add an energy-charge for \""
+                                    + getId()
+                                    + "\" at "
+                                    + new BlockPosition(l));
         }
     }
 
@@ -236,8 +250,14 @@ public interface EnergyNetComponent extends ItemAttribute {
                 }
             }
         } catch (Exception | LinkageError x) {
-            Slimefun.logger().log(Level.SEVERE, x, () -> "Exception while trying to remove an energy-charge for \"" + getId() + "\" at " + new BlockPosition(l));
+            Slimefun.logger()
+                    .log(
+                            Level.SEVERE,
+                            x,
+                            () -> "Exception while trying to remove an energy-charge for \""
+                                    + getId()
+                                    + "\" at "
+                                    + new BlockPosition(l));
         }
     }
-
 }

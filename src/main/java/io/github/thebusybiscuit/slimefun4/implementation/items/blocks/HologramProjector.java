@@ -32,11 +32,11 @@ import org.bukkit.inventory.ItemStack;
 /**
  * The {@link HologramProjector} is a very simple block which allows the {@link Player}
  * to create a floating text that is completely configurable.
- * 
+ *
  * @author TheBusyBiscuit
  * @author Kry-Vosa
  * @author SoSeDiK
- * 
+ *
  * @see HologramOwner
  * @see HologramsService
  *
@@ -46,7 +46,12 @@ public class HologramProjector extends SlimefunItem implements HologramOwner {
     private static final String OFFSET_PARAMETER = "offset";
 
     @ParametersAreNonnullByDefault
-    public HologramProjector(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, ItemStack recipeOutput) {
+    public HologramProjector(
+            ItemGroup itemGroup,
+            SlimefunItemStack item,
+            RecipeType recipeType,
+            ItemStack[] recipe,
+            ItemStack recipeOutput) {
         super(itemGroup, item, recipeType, recipe, recipeOutput);
 
         addItemHandler(onPlace(), onRightClick(), onBreak());
@@ -65,7 +70,6 @@ public class HologramProjector extends SlimefunItem implements HologramOwner {
 
                 getArmorStand(b, true);
             }
-
         };
     }
 
@@ -99,9 +103,16 @@ public class HologramProjector extends SlimefunItem implements HologramOwner {
     }
 
     private void openEditor(@Nonnull Player p, @Nonnull Block projector) {
-        ChestMenu menu = new ChestMenu(Slimefun.getLocalization().getMessage(p, "machines.HOLOGRAM_PROJECTOR.inventory-title"));
+        ChestMenu menu =
+                new ChestMenu(Slimefun.getLocalization().getMessage(p, "machines.HOLOGRAM_PROJECTOR.inventory-title"));
 
-        menu.addItem(0, new CustomItemStack(Material.NAME_TAG, "&7展示文本 &e(点击编辑)", "", "&f" + ChatColors.color(StorageCacheUtils.getData(projector.getLocation(), "text"))));
+        menu.addItem(
+                0,
+                new CustomItemStack(
+                        Material.NAME_TAG,
+                        "&7展示文本 &e(点击编辑)",
+                        "",
+                        "&f" + ChatColors.color(StorageCacheUtils.getData(projector.getLocation(), "text"))));
         menu.addMenuClickHandler(0, (pl, slot, item, action) -> {
             pl.closeInventory();
             Slimefun.getLocalization().sendMessage(pl, "machines.HOLOGRAM_PROJECTOR.enter-text", true);
@@ -123,12 +134,24 @@ public class HologramProjector extends SlimefunItem implements HologramOwner {
             return false;
         });
 
-        menu.addItem(1, new CustomItemStack(Material.CLOCK, "&7高度: &e" + NumberUtils.reparseDouble(Double.parseDouble(StorageCacheUtils.getData(projector.getLocation(), OFFSET_PARAMETER)) + 1.0D), "", "&f左键单击: &7+0.1", "&f右键单击: &7-0.1"));
+        menu.addItem(
+                1,
+                new CustomItemStack(
+                        Material.CLOCK,
+                        "&7高度: &e"
+                                + NumberUtils.reparseDouble(Double.parseDouble(
+                                                StorageCacheUtils.getData(projector.getLocation(), OFFSET_PARAMETER))
+                                        + 1.0D),
+                        "",
+                        "&f左键单击: &7+0.1",
+                        "&f右键单击: &7-0.1"));
         menu.addMenuClickHandler(1, (pl, slot, item, action) -> {
             var blockData = StorageCacheUtils.getBlock(projector.getLocation());
-            double offset = NumberUtils.reparseDouble(Double.parseDouble(blockData.getData(OFFSET_PARAMETER)) + (action.isRightClicked() ? -0.1F : 0.1F));
+            double offset = NumberUtils.reparseDouble(
+                    Double.parseDouble(blockData.getData(OFFSET_PARAMETER)) + (action.isRightClicked() ? -0.1F : 0.1F));
             ArmorStand hologram = getArmorStand(projector, true);
-            Location l = new Location(projector.getWorld(), projector.getX() + 0.5, projector.getY() + offset, projector.getZ() + 0.5);
+            Location l = new Location(
+                    projector.getWorld(), projector.getX() + 0.5, projector.getY() + offset, projector.getZ() + 0.5);
             hologram.teleport(l);
 
             blockData.setData(OFFSET_PARAMETER, String.valueOf(offset));
@@ -143,7 +166,8 @@ public class HologramProjector extends SlimefunItem implements HologramOwner {
         var blockData = StorageCacheUtils.getBlock(projector.getLocation());
         String nametag = blockData.getData("text");
         double offset = Double.parseDouble(blockData.getData(OFFSET_PARAMETER));
-        Location l = new Location(projector.getWorld(), projector.getX() + 0.5, projector.getY() + offset, projector.getZ() + 0.5);
+        Location l = new Location(
+                projector.getWorld(), projector.getX() + 0.5, projector.getY() + offset, projector.getZ() + 0.5);
 
         for (Entity n : l.getChunk().getEntities()) {
             if (n instanceof ArmorStand armorStand && l.distanceSquared(n.getLocation()) < 0.4) {

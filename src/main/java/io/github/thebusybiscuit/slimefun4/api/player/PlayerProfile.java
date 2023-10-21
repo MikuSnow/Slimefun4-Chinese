@@ -39,9 +39,9 @@ import org.bukkit.entity.Player;
 /**
  * A class that can store a Player's {@link Research} progress for caching purposes.
  * It also holds the backpacks of a {@link Player}.
- * 
+ *
  * @author TheBusyBiscuit
- * 
+ *
  * @see Research
  * @see Waypoint
  * @see HashedArmorpiece
@@ -61,7 +61,9 @@ public class PlayerProfile {
     private final List<Waypoint> waypoints = new ArrayList<>();
     private final GuideHistory guideHistory = new GuideHistory(this);
 
-    private final HashedArmorpiece[] armor = { new HashedArmorpiece(), new HashedArmorpiece(), new HashedArmorpiece(), new HashedArmorpiece() };
+    private final HashedArmorpiece[] armor = {
+        new HashedArmorpiece(), new HashedArmorpiece(), new HashedArmorpiece(), new HashedArmorpiece()
+    };
 
     public PlayerProfile(@Nonnull OfflinePlayer p, int backpackNum) {
         this(p, backpackNum, new HashSet<>());
@@ -79,13 +81,18 @@ public class PlayerProfile {
     private void loadWaypoint() {
         for (String key : waypointsFile.getKeys()) {
             try {
-                if (waypointsFile.contains(key + ".world") && Bukkit.getWorld(waypointsFile.getString(key + ".world")) != null) {
+                if (waypointsFile.contains(key + ".world")
+                        && Bukkit.getWorld(waypointsFile.getString(key + ".world")) != null) {
                     String waypointName = waypointsFile.getString(key + ".name");
                     Location loc = waypointsFile.getLocation(key);
                     waypoints.add(new Waypoint(this, key, loc, waypointName));
                 }
             } catch (Exception x) {
-                Slimefun.logger().log(Level.WARNING, x, () -> "Could not load Waypoint \"" + key + "\" for Player \"" + owner.getName() + '"');
+                Slimefun.logger()
+                        .log(
+                                Level.WARNING,
+                                x,
+                                () -> "Could not load Waypoint \"" + key + "\" for Player \"" + owner.getName() + '"');
             }
         }
     }
@@ -93,7 +100,7 @@ public class PlayerProfile {
     /**
      * This method provides a fast way to access the armor of a {@link Player}.
      * It returns a cached version, represented by {@link HashedArmorpiece}.
-     * 
+     *
      * @return The cached armor for this {@link Player}
      */
     public @Nonnull HashedArmorpiece[] getArmor() {
@@ -102,7 +109,7 @@ public class PlayerProfile {
 
     /**
      * This returns the {@link UUID} this {@link PlayerProfile} is linked to.
-     * 
+     *
      * @return The {@link UUID} of our {@link PlayerProfile}
      */
     public @Nonnull UUID getUUID() {
@@ -112,7 +119,7 @@ public class PlayerProfile {
     /**
      * This method returns whether the {@link Player} has logged off.
      * If this is true, then the Profile can be removed from RAM.
-     * 
+     *
      * @return Whether the Profile is marked for deletion
      */
     public boolean isMarkedForDeletion() {
@@ -121,7 +128,7 @@ public class PlayerProfile {
 
     /**
      * This method returns whether the Profile has unsaved changes
-     * 
+     *
      * @return Whether there are unsaved changes
      */
     public boolean isDirty() {
@@ -140,7 +147,7 @@ public class PlayerProfile {
     /**
      * This method sets the Player's "researched" status for this Research.
      * Use the boolean to unlock or lock the {@link Research}
-     * 
+     *
      * @param research
      *            The {@link Research} that should be unlocked or locked
      * @param unlock
@@ -155,15 +162,17 @@ public class PlayerProfile {
         } else {
             researches.remove(research);
         }
-        Slimefun.getDatabaseManager().getProfileDataController().setResearch(owner.getUniqueId().toString(), research.getKey(), unlock);
+        Slimefun.getDatabaseManager()
+                .getProfileDataController()
+                .setResearch(owner.getUniqueId().toString(), research.getKey(), unlock);
     }
 
     /**
      * This method returns whether the {@link Player} has unlocked the given {@link Research}
-     * 
+     *
      * @param research
      *            The {@link Research} that is being queried
-     * 
+     *
      * @return Whether this {@link Research} has been unlocked
      */
     public boolean hasUnlocked(@Nullable Research research) {
@@ -177,7 +186,7 @@ public class PlayerProfile {
 
     /**
      * This method returns whether this {@link Player} has unlocked all {@link Research Researches}.
-     * 
+     *
      * @return Whether they unlocked every {@link Research}
      */
     public boolean hasUnlockedEverything() {
@@ -194,7 +203,7 @@ public class PlayerProfile {
 
     /**
      * This Method will return all Researches that this {@link Player} has unlocked
-     * 
+     *
      * @return A {@code Hashset<Research>} of all Researches this {@link Player} has unlocked
      */
     public @Nonnull Set<Research> getResearches() {
@@ -204,7 +213,7 @@ public class PlayerProfile {
     /**
      * This returns a {@link List} of all {@link Waypoint Waypoints} belonging to this
      * {@link PlayerProfile}.
-     * 
+     *
      * @return A {@link List} containing every {@link Waypoint}
      */
     public @Nonnull List<Waypoint> getWaypoints() {
@@ -214,7 +223,7 @@ public class PlayerProfile {
     /**
      * This adds the given {@link Waypoint} to the {@link List} of {@link Waypoint Waypoints}
      * of this {@link PlayerProfile}.
-     * 
+     *
      * @param waypoint
      *            The {@link Waypoint} to add
      */
@@ -239,7 +248,7 @@ public class PlayerProfile {
     /**
      * This removes the given {@link Waypoint} from the {@link List} of {@link Waypoint Waypoints}
      * of this {@link PlayerProfile}.
-     * 
+     *
      * @param waypoint
      *            The {@link Waypoint} to remove
      */
@@ -285,7 +294,8 @@ public class PlayerProfile {
     public @Nonnull String getTitle() {
         List<String> titles = Slimefun.getRegistry().getResearchRanks();
 
-        float fraction = (float) researches.size() / Slimefun.getRegistry().getResearches().size();
+        float fraction = (float) researches.size()
+                / Slimefun.getRegistry().getResearches().size();
         int index = (int) (fraction * (titles.size() - 1));
 
         return titles.get(index);
@@ -293,7 +303,8 @@ public class PlayerProfile {
 
     public void sendStats(@Nonnull CommandSender sender) {
         Set<Research> unlockedResearches = getResearches();
-        int levels = unlockedResearches.stream().mapToInt(Research::getLevelCost).sum();
+        int levels =
+                unlockedResearches.stream().mapToInt(Research::getLevelCost).sum();
         int allResearches = nonEmptyResearches();
 
         float progress = Math.round(((unlockedResearches.size() * 100.0F) / allResearches) * 100.0F) / 100.0F;
@@ -302,14 +313,23 @@ public class PlayerProfile {
         sender.sendMessage(ChatColors.color("&7玩家研究统计: &b" + owner.getName()));
         sender.sendMessage("");
         sender.sendMessage(ChatColors.color("&7研究等级: " + ChatColor.AQUA + getTitle()));
-        sender.sendMessage(ChatColors.color("&7研究进度: " + NumberUtils.getColorFromPercentage(progress) + progress + " &r% " + ChatColor.YELLOW + '(' + unlockedResearches.size() + " / " + allResearches + ')'));
+        sender.sendMessage(ChatColors.color("&7研究进度: "
+                + NumberUtils.getColorFromPercentage(progress)
+                + progress
+                + " &r% "
+                + ChatColor.YELLOW
+                + '('
+                + unlockedResearches.size()
+                + " / "
+                + allResearches
+                + ')'));
         sender.sendMessage(ChatColors.color("&7总花费经验等级: " + ChatColor.AQUA + levels));
     }
 
     /**
      * This returns the {@link Player} who this {@link PlayerProfile} belongs to.
      * If the {@link Player} is offline, null will be returned.
-     * 
+     *
      * @return The {@link Player} of this {@link PlayerProfile} or null
      */
     public @Nullable Player getPlayer() {
@@ -319,7 +339,7 @@ public class PlayerProfile {
     /**
      * This returns the {@link GuideHistory} of this {@link Player}.
      * It is basically that player's browsing history.
-     * 
+     *
      * @return The {@link GuideHistory} of this {@link Player}
      */
     public @Nonnull GuideHistory getGuideHistory() {
@@ -337,7 +357,7 @@ public class PlayerProfile {
      *            The {@link OfflinePlayer} who's {@link PlayerProfile} to retrieve
      * @param callback
      *            The callback with the {@link PlayerProfile}
-     * 
+     *
      * @return If the {@link OfflinePlayer} was cached or not.
      */
     public static boolean get(@Nonnull OfflinePlayer p, @Nonnull Consumer<PlayerProfile> callback) {
@@ -358,10 +378,10 @@ public class PlayerProfile {
     /**
      * This requests an instance of {@link PlayerProfile} to be loaded for the given {@link OfflinePlayer}.
      * This method will return true if the {@link PlayerProfile} was already found.
-     * 
+     *
      * @param p
      *            The {@link OfflinePlayer} to request the {@link PlayerProfile} for.
-     * 
+     *
      * @return Whether the {@link PlayerProfile} was already loaded
      */
     public static boolean request(@Nonnull OfflinePlayer p) {
@@ -381,10 +401,10 @@ public class PlayerProfile {
      * This method tries to search for a {@link PlayerProfile} of the given {@link OfflinePlayer}.
      * The result of this method is an {@link Optional}, if no {@link PlayerProfile} was found, an empty
      * {@link Optional} will be returned.
-     * 
+     *
      * @param p
      *            The {@link OfflinePlayer} to get the {@link PlayerProfile} for
-     * 
+     *
      * @return An {@link Optional} describing the result
      */
     public static @Nonnull Optional<PlayerProfile> find(@Nonnull OfflinePlayer p) {
@@ -453,9 +473,9 @@ public class PlayerProfile {
 
     // returns the amount of researches with at least 1 enabled item
     private int nonEmptyResearches() {
-        return (int) Slimefun.getRegistry().getResearches()
-                .stream()
-                .filter(research -> research.getAffectedItems().stream().anyMatch(item -> item.getState() == ItemState.ENABLED))
+        return (int) Slimefun.getRegistry().getResearches().stream()
+                .filter(research ->
+                        research.getAffectedItems().stream().anyMatch(item -> item.getState() == ItemState.ENABLED))
                 .count();
     }
 
@@ -483,5 +503,4 @@ public class PlayerProfile {
             }
         });
     }
-
 }

@@ -1,18 +1,15 @@
 package io.github.thebusybiscuit.slimefun4.implementation.listeners;
 
-import javax.annotation.Nonnull;
-
 import com.xzavier0722.mc.plugin.slimefun4.storage.util.StorageCacheUtils;
+import io.github.thebusybiscuit.slimefun4.core.attributes.NotHopperable;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
+import javax.annotation.Nonnull;
+import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
-
-import io.github.thebusybiscuit.slimefun4.core.attributes.NotHopperable;
-import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
-
-import me.mrCookieSlime.Slimefun.Objects.SlimefunItem.abstractItems.AContainer;
 
 /**
  * This {@link Listener} prevents item from being transferred to
@@ -33,7 +30,9 @@ public class HopperListener implements Listener {
     public void onHopperInsert(InventoryMoveItemEvent e) {
         Location loc = e.getDestination().getLocation();
 
-        if (loc != null && e.getSource().getType() == InventoryType.HOPPER && StorageCacheUtils.getSfItem(loc) instanceof NotHopperable) {
+        if (loc != null
+                && e.getSource().getType() == InventoryType.HOPPER
+                && StorageCacheUtils.getSfItem(loc) instanceof NotHopperable) {
             e.setCancelled(true);
         }
     }

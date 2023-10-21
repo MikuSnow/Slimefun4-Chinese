@@ -10,11 +10,14 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.RainbowTickHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.RainbowBlock;
+import javax.annotation.ParametersAreNonnullByDefault;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * The {@link TeleporterPylon} is a special kind of {@link RainbowBlock} which is required
  * for the {@link Teleporter}.
- * 
+ *
  * @author TheBusyBiscuit
  *
  * @see Teleporter
@@ -24,8 +27,17 @@ import io.github.thebusybiscuit.slimefun4.implementation.items.blocks.RainbowBlo
 public class TeleporterPylon extends SlimefunItem {
 
     @ParametersAreNonnullByDefault
-    public TeleporterPylon(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, ItemStack recipeOutput) {
-        super(itemGroup, item, recipeType, recipe, recipeOutput);
+    public TeleporterPylon(
+            ItemGroup itemGroup,
+            SlimefunItemStack item,
+            RecipeType recipeType,
+            ItemStack[] recipe,
+            ItemStack recipeOutput) {
+        super(
+                itemGroup,
+                item,
+                recipeType,
+                recipe,
+                recipeOutput);
     }
-
 }

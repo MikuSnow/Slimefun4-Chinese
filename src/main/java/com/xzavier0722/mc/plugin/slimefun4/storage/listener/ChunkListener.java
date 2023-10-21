@@ -11,5 +11,4 @@ public class ChunkListener implements Listener {
     public void onChunkLoad(ChunkLoadEvent e) {
         Slimefun.getDatabaseManager().getBlockDataController().loadChunk(e.getChunk(), e.isNewChunk());
     }
-
 }

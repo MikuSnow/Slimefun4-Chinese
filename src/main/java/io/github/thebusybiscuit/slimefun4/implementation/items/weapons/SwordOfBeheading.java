@@ -1,10 +1,15 @@
 package io.github.thebusybiscuit.slimefun4.implementation.items.weapons;
 
+import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
+import io.github.thebusybiscuit.slimefun4.api.items.settings.IntRangeSetting;
+import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.core.handlers.EntityKillHandler;
+import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-
 import javax.annotation.ParametersAreNonnullByDefault;
-
 import org.bukkit.Material;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Monster;
@@ -16,22 +21,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
-import io.github.thebusybiscuit.slimefun4.api.items.ItemSetting;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.api.items.settings.IntRangeSetting;
-import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import io.github.thebusybiscuit.slimefun4.core.handlers.EntityKillHandler;
-import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
-
 /**
  * The {@link SwordOfBeheading} is a special kind of sword which allows you to obtain
  * {@link Zombie}, {@link Skeleton} and {@link Creeper} skulls when killing the respective {@link Monster}.
  * Additionally, you can also obtain the head of a {@link Player} by killing them too.
  * This sword also allows you to have a higher chance of getting the skull of a {@link WitherSkeleton} too.
- * 
+ *
  * All chances are managed by an {@link ItemSetting} and can be configured.
- * 
+ *
  * @author TheBusyBiscuit
  *
  */
@@ -39,7 +36,8 @@ public class SwordOfBeheading extends SimpleSlimefunItem<EntityKillHandler> {
 
     private final ItemSetting<Integer> chanceZombie = new IntRangeSetting(this, "chance.ZOMBIE", 0, 40, 100);
     private final ItemSetting<Integer> chanceSkeleton = new IntRangeSetting(this, "chance.SKELETON", 0, 40, 100);
-    private final ItemSetting<Integer> chanceWitherSkeleton = new IntRangeSetting(this, "chance.WITHER_SKELETON", 0, 25, 100);
+    private final ItemSetting<Integer> chanceWitherSkeleton =
+            new IntRangeSetting(this, "chance.WITHER_SKELETON", 0, 25, 100);
     private final ItemSetting<Integer> chanceCreeper = new IntRangeSetting(this, "chance.CREEPER", 0, 40, 100);
     private final ItemSetting<Integer> chancePlayer = new IntRangeSetting(this, "chance.PLAYER", 0, 70, 100);
 
@@ -92,5 +90,4 @@ public class SwordOfBeheading extends SimpleSlimefunItem<EntityKillHandler> {
             }
         };
     }
-
 }

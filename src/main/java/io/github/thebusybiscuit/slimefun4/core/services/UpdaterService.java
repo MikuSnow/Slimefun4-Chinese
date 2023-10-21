@@ -86,8 +86,7 @@ public class UpdaterService {
      * This will start the {@link UpdaterService} and check for updates.
      * If it can find an update it will automatically be installed.
      */
-    public void start() {
-    }
+    public void start() {}
 
     /**
      * This returns whether the {@link PluginUpdater} is enabled or not.
@@ -103,11 +102,9 @@ public class UpdaterService {
     /**
      * This method is called when the {@link UpdaterService} was disabled.
      */
-    public void disable() {
-    }
+    public void disable() {}
 
     private void printBorder() {
         plugin.getLogger().log(Level.WARNING, "#######################################################");
     }
-
 }

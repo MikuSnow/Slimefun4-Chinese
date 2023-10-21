@@ -1,5 +1,10 @@
 package io.github.thebusybiscuit.slimefun4.implementation.tasks;
 
+import io.github.bakedlibs.dough.skins.PlayerHead;
+import io.github.bakedlibs.dough.skins.PlayerSkin;
+import io.github.thebusybiscuit.slimefun4.implementation.items.electric.Capacitor;
+import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
+import io.papermc.lib.PaperLib;
 import javax.annotation.Nonnull;
 
 import io.github.thebusybiscuit.slimefun4.utils.UpdateSkullBlock;
@@ -9,16 +14,10 @@ import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.block.Block;
 
-import io.github.bakedlibs.dough.skins.PlayerHead;
-import io.github.bakedlibs.dough.skins.PlayerSkin;
-import io.github.thebusybiscuit.slimefun4.implementation.items.electric.Capacitor;
-import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
-import io.papermc.lib.PaperLib;
-
 /**
  * This task is run whenever a {@link Capacitor} needs to update their texture.
  * <strong>This must be executed on the main {@link Server} {@link Thread}!</strong>
- * 
+ *
  * @author TheBusyBiscuit
  *
  */
@@ -37,7 +36,7 @@ public class CapacitorTextureUpdateTask implements Runnable {
 
     /**
      * This creates a new {@link CapacitorTextureUpdateTask} with the given parameters.
-     * 
+     *
      * @param l
      *            The {@link Location} of the {@link Capacitor}
      * @param charge
@@ -59,7 +58,6 @@ public class CapacitorTextureUpdateTask implements Runnable {
 
         // Ensure that this Block is still a Player Head
         if (type == Material.PLAYER_HEAD || type == Material.PLAYER_WALL_HEAD) {
-            System.out.println(filledPercentage);
             if (filledPercentage <= 0.0) {
                 UpdateSkullBlock.manageCapacitorProcess(l, 0);
                 // 0-25% capacity
@@ -97,5 +95,4 @@ public class CapacitorTextureUpdateTask implements Runnable {
 
         PaperLib.getBlockState(b, false).getState().update(true, false);
     }
-
 }

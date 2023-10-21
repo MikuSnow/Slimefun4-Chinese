@@ -1,11 +1,9 @@
 package io.github.thebusybiscuit.slimefun4.implementation.tasks.player;
 
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import javax.annotation.Nonnull;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 
 abstract class AbstractPlayerTask implements Runnable {
 
@@ -45,7 +43,7 @@ abstract class AbstractPlayerTask implements Runnable {
     /**
      * This method checks if this {@link AbstractPlayerTask} should be continued or cancelled.
      * It will also cancel this {@link AbstractPlayerTask} if it became invalid.
-     * 
+     *
      * @return Whether this {@link AbstractPlayerTask} is still valid
      */
     protected boolean isValid() {
