@@ -5,4 +5,6 @@ public enum StorageType {
     SQLITE,
 
     POSTGRESQL,
+
+    MONGO,
 }

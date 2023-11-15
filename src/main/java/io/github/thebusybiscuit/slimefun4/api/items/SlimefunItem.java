@@ -1021,18 +1021,21 @@ public class SlimefunItem implements Placeable {
 
     @Override
     public String toString() {
-        if (addon == null) {
-            return getClass().getSimpleName() + " - '" + id + "'";
-        } else {
-            return getClass().getSimpleName()
-                    + " - '"
-                    + id
-                    + "' ("
-                    + addon.getName()
-                    + " v"
-                    + addon.getPluginVersion()
-                    + ')';
+        String result = getClass().getSimpleName() + " - '" + id + "'";
+
+//        if (addon != null) {
+//            result += " (" + addon.getName() + " v" + addon.getPluginVersion() + ')';
+//        }
+
+        result += ", DisplayName: " + getItemName();
+        result += ", Group: " + itemGroup.getKey();
+        result += ", RecipeType: " + recipeType.getKey();
+        result += ", Recipe: " + Arrays.toString(recipe);
+        if (getResearch() != null) {
+            result += ", Research: " + getResearch().toString();
         }
+
+        return result;
     }
 
     @Override

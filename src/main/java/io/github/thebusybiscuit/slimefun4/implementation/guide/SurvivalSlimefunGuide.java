@@ -289,6 +289,35 @@ public class SurvivalSlimefunGuide implements SlimefunGuideImplementation {
 
         menu.open(p);
     }
+    private void openUnlockConfirmationMenu(PlayerProfile profile, Player p, ItemGroup itemGroup, SlimefunItem sfitem, int page) {
+        ChestMenu confirmationMenu = new ChestMenu("确认解锁");
+
+        // 添加确认按钮
+        ItemStack confirmButton = new CustomItemStack(Material.GREEN_WOOL, "&a确认");
+        confirmationMenu.addItem(11, confirmButton, (player, slot, item, action) -> {
+            // 执行解锁操作
+            Research research = sfitem.getResearch();
+            if (research != null) {
+                research.unlockFromGuide(this, player, profile, sfitem, itemGroup, page);
+            }
+            openItemGroup(profile, itemGroup, page);
+            // 返回上一级界面（您可以根据需要修改此部分）
+            // 这里可以添加返回上一级界面的逻辑
+            return false;
+        });
+
+        // 添加取消按钮
+        ItemStack cancelButton = new CustomItemStack(Material.RED_WOOL, "&c取消");
+        confirmationMenu.addItem(15, cancelButton, (player, slot, item, action) -> {
+            openItemGroup(profile, itemGroup, page);
+            // 返回上一级界面（您可以根据需要修改此部分）
+            // 这里可以添加返回上一级界面的逻辑
+            return false;
+        });
+
+        // 打开确认界面
+        confirmationMenu.open(p);
+    }
 
     private void displaySlimefunItem(
             ChestMenu menu,
@@ -314,11 +343,12 @@ public class SurvivalSlimefunGuide implements SlimefunGuideImplementation {
             String lore2 = "";
 
             if (VaultIntegration.econ != null && Slimefun.getConfigManager().isUsBothUnlock()) {
-                lore = String.format("%.2f", research.getCurrencyCost()) + " 游戏币";
+                lore = "§b" + String.format("%.0f", research.getCurrencyCost()) + " §e金币";
+                lore2 = "§b" + research.getLevelCost() + " §e级经验";
             } else if (VaultIntegration.isEnabled()) {
-                lore = String.format("%.2f", research.getCurrencyCost()) + " 游戏币";
+                lore = "§b" + String.format("%.0f", research.getCurrencyCost()) + " §e金币";
             } else {
-                lore = research.getLevelCost() + " 级经验";
+                lore = "§b" + research.getLevelCost() + " §e级经验";
             }
 
 
@@ -353,7 +383,8 @@ public class SurvivalSlimefunGuide implements SlimefunGuideImplementation {
                         )));
             }
             menu.addMenuClickHandler(index, (pl, slot, item, action) -> {
-                research.unlockFromGuide(this, p, profile, sfitem, itemGroup, page);
+                openUnlockConfirmationMenu(profile, pl, itemGroup, sfitem, page);
+//                research.unlockFromGuide(this, p, profile, sfitem, itemGroup, page);
                 return false;
             });
         } else {

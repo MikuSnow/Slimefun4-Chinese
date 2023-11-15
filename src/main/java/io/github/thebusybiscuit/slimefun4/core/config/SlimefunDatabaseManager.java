@@ -1,6 +1,7 @@
 package io.github.thebusybiscuit.slimefun4.core.config;
 
 import com.xzavier0722.mc.plugin.slimefun4.storage.adapter.IDataSourceAdapter;
+import com.xzavier0722.mc.plugin.slimefun4.storage.adapter.mongo.MongoAdapter;
 import com.xzavier0722.mc.plugin.slimefun4.storage.adapter.mysql.MysqlAdapter;
 import com.xzavier0722.mc.plugin.slimefun4.storage.adapter.mysql.MysqlConfig;
 import com.xzavier0722.mc.plugin.slimefun4.storage.adapter.postgresql.PostgreSqlAdapter;
@@ -87,6 +88,13 @@ public class SlimefunDatabaseManager {
 
     private void initAdapter(StorageType storageType, DataType dataType, Config databaseConfig) throws IOException {
         switch (storageType) {
+            case MONGO -> {
+                var adapter = new MongoAdapter();
+                switch (dataType) {
+                    case BLOCK_STORAGE -> blockStorageAdapter = adapter;
+                    case PLAYER_PROFILE -> profileAdapter = adapter;
+                }
+            }
             case MYSQL -> {
                 var adapter = new MysqlAdapter();
 
